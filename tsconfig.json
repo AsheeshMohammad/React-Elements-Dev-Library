@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist", // Directory for the output files
+    "target": "es6", // Target modern JavaScript version
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext", // Use ESNext module syntax
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false, // Allow emitting output files
+    "jsx": "react-jsx",
+    "declaration": true, // Generate .d.ts files
+    "declarationDir": "./dist" // Output directory for .d.ts files
+  },
+  "include": [
+    "src"
+  ]
+}
