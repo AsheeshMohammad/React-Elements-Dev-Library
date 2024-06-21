@@ -74,7 +74,7 @@ export default function MultiSelectV1({ props }: any) {
     return array.some((item:any) => item === value);
   }
   useEffect(() => {
-    if (fieldValue?.split(",").length !== filterOptions.length) {
+    if (fieldValue?.split(",")?.length !== filterOptions?.length) {
       setSelectAll(false);
     } else {
       console.log(fieldValue?.split(","),filterOptions,'filterOptionsfilterOptions');
@@ -130,15 +130,15 @@ export default function MultiSelectV1({ props }: any) {
                 )
               }
             >
-              {selected.length > 3
-                ? selected.length + `  Selected`
+              {selected?.length > 3
+                ? selected?.length + `  Selected`
                 : selected?.join(", ")}
             </Tooltip>
           )}
           MenuProps={MenuProps} // Pass the MenuProps object here
           autoFocus={false}
         >
-          {/* {options.length!==0 ? <> */}
+          {/* {options?.length!==0 ? <> */}
           <Box
             sx={{
               width: "100%",
@@ -148,7 +148,7 @@ export default function MultiSelectV1({ props }: any) {
               zIndex: 2,
               height: "33px",
               background: "#fff",
-              display: options.length === 0 ? "none" : undefined,
+              display: options?.length === 0 ? "none" : undefined,
             }}
           >
             <TextField
@@ -170,9 +170,9 @@ export default function MultiSelectV1({ props }: any) {
             />
           </Box>
             <MenuItem
-              disabled={filterOptions.length===0}
+              disabled={filterOptions?.length===0}
               onChange={(e) => setSelectAll(!selectAll)}
-              sx={{ zIndex: 0, fontSize: "5px !important",display:options.length===0 ? 'none' : '' }}
+              sx={{ zIndex: 0, fontSize: "5px !important",display:options?.length===0 ? 'none' : '' }}
             >
               <Checkbox
                 checked={selectAll}
@@ -186,7 +186,7 @@ export default function MultiSelectV1({ props }: any) {
               />
               <ListItemText primary={"Select All"} sx={{ fontSize: "5px" }} />
             </MenuItem>
-          {filterOptions.length !== 0 ? (
+          {filterOptions?.length !== 0 ? (
             filterOptions?.map((name) => (
               <MenuItem
                 key={name}

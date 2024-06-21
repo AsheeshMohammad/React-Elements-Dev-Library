@@ -1,6 +1,6 @@
 {
   "name": "tp-react-elements-dev",
-  "version": "1.4.3",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "private": false,
   "types": "dist/index.d.ts",
@@ -11,6 +11,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hookform/error-message": "^2.0.1",
+    "@hookform/resolvers": "^3.6.0",
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
     "@mui/styles": "^5.15.2",
@@ -33,7 +34,8 @@
     "sass": "^1.77.4",
     "tslib": "^2.6.2",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

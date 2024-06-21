@@ -36,7 +36,7 @@ export const renderLabel = (
     </LabelComponent>
   );
 };
-export function formatDateMonthAndYear(date:any) {
+export function formatDateMonthAndYear(date: any) {
   // Split the date string into month and year
   const [month, year] = date.split("/");
 
@@ -48,37 +48,55 @@ export function formatDateMonthAndYear(date:any) {
 }
 
 interface OptionsProps {
-    label: string | boolean | number;
-    value: string | number;
-  }
-  
-  interface FormSectionPropsItem {
-    name: string;
-    label: string;
-    inputType: 'text' | 'password' | 'number' | 'select' | 'datepicker' | 'multiselect' | 'select-v2' | 'register-number' | 'decimal' | 'alpha-numerical' | 'datepicker' | 'yearpicker' | 'dateRangePicker' | 'monthpicker' | 'multiselect' | 'file' | 'textarea';
-    options?: OptionsProps[];
-    required?: boolean;
-    errorMessage?: string;
-    helperText?: string;
-    disable?: boolean;
-    onChangeFn?: (e: string | number | undefined | null | boolean) => void;
-    maxLength?: number;
-    minDate?:string
-    placeholder?:string
-    minRows?:string
-  }
-  
-  export interface FormRenderProps {
-    item: FormSectionPropsItem;
-    register:any;
-    control:any;
-    errors:any;
-    getValues:any;
-    clearErrors:any;
-    setValue:any;
-  }
-  const  RenderForm = (props: FormRenderProps) => {
-    
+  label: string | boolean | number;
+  value: string | number;
+}
+
+export interface FormSectionPropsItem {
+  name: string;
+  label: string;
+  inputType:
+    | "text"
+    | "password"
+    | "number"
+    | "select"
+    | "datepicker"
+    | "multiselect"
+    | "select-v2"
+    | "register-number"
+    | "decimal"
+    | "alpha-numerical"
+    | "datepicker"
+    | "yearpicker"
+    | "dateRangePicker"
+    | "monthpicker"
+    | "multiselect"
+    | "file"
+    | "textarea";
+  options?: OptionsProps[];
+  required?: boolean;
+  errorMessage?: string;
+  helperText?: string;
+  disable?: boolean;
+  onChangeFn?: (e: string | number | undefined | null | boolean) => void;
+  maxLength?: number;
+  minDate?: string;
+  placeholder?: string;
+  minRows?: string;
+  CustomProps?: string;
+  numberOfColumns?: number;
+}
+
+export interface FormRenderProps {
+  item: FormSectionPropsItem;
+  register: any;
+  control: any;
+  errors: any;
+  getValues: any;
+  clearErrors: any;
+  setValue: any;
+}
+const RenderForm = (props: FormRenderProps) => {
   switch (props.item?.inputType) {
     case "text":
       return (
@@ -126,6 +144,7 @@ interface OptionsProps {
                   }}
                   // classes={{ option: { color: "red !important" } }}
                   value={field.value || ""}
+                  size="small"
                   disabled={props.item.disable}
                 />
                 {props?.item?.helperText && (
@@ -166,7 +185,12 @@ interface OptionsProps {
                     },
                   }}
                   onInput={(e: any) => {
-                    e.target.value = e.target.value.replace(/\s/g, "").replace(/[^a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~`|\\-]/g, '')
+                    e.target.value = e.target.value
+                      .replace(/\s/g, "")
+                      .replace(
+                        /[^a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~`|\\-]/g,
+                        ""
+                      );
                   }}
                   sx={{
                     fontFamily: "Roboto-Reg",
@@ -251,12 +275,14 @@ interface OptionsProps {
                 <>
                   <TextField
                     {...field}
+                    size="small"
                     label={props.item.label}
                     value={props.getValues(props.item.name) || ""}
                     defaultValue={props.getValues(props.item.name) || null}
                     onInput={(e: any) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                      props?.item?.onChangeFn && props?.item?.onChangeFn(e.target.value);
+                      props?.item?.onChangeFn &&
+                        props?.item?.onChangeFn(e.target.value);
                       props?.clearErrors && props?.clearErrors(props.item.name);
                     }}
                     sx={{
@@ -575,18 +601,20 @@ interface OptionsProps {
                     onChange={(date) => field.onChange(date)}
                     slots={{
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      textField: (textFieldProps:any) => <TextField
-                      {...textFieldProps}
-                      fullWidth
-                      disabled={props.item.disable || false}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      error={props.errors}
-                      inputProps={{
-                        min: props.item.minDate,
-                      }}
-                    />
+                      textField: (textFieldProps: any) => (
+                        <TextField
+                          {...textFieldProps}
+                          fullWidth
+                          disabled={props.item.disable || false}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          error={props.errors}
+                          inputProps={{
+                            min: props.item.minDate,
+                          }}
+                        />
+                      ),
                     }}
                     // renderInput={(params : any) => (
                     //   <TextField
@@ -783,6 +811,8 @@ interface OptionsProps {
     //       </ErrorMessageComponent>
     //     </>
     //   );
+    default :
+     return <></>
   }
 };
-export default RenderForm
+export default RenderForm;

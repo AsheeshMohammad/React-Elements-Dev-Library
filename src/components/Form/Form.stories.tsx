@@ -1,42 +1,85 @@
-import React from 'react';
-import { Meta, StoryFn } from '@storybook/react/types-6-0';
-import RenderForm, { FormRenderProps } from './FormRender';
-import { useForm } from 'react-hook-form';
+import React, { useEffect, useState } from "react";
+import { Meta, StoryFn } from "@storybook/react/types-6-0";
+import RenderForm, {
+  FormRenderProps,
+  FormSectionPropsItem,
+} from "./FormRender";
+import {
+  SubmitErrorHandler,
+  SubmitHandler,
+  UseFormHandleSubmit,
+  useForm,
+} from "react-hook-form";
+import FormRenderWrapper, { FormRenderWrapperProps } from "./FormRenderWrapper";
 
 export default {
-  title: 'Components/Form',
+  title: "Components/Form",
   component: RenderForm,
 } as Meta;
 
-const FormComponent: React.FC<FormRenderProps> = (props) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    clearErrors,
-    watch,
-    control,
-    getValues,
-    reset,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-        text:'Hii'
-    },
-  });
-
-  return <RenderForm {...props} errors={errors} register={register}  setValue={setValue} clearErrors={clearErrors} getValues={getValues} control={control} />;
+interface formFunctionsProps {
+  handleSubmit: any;
+  setValue: any;
+  watch: any;
+  register: any;
+  errors: any;
+  getValues: any;
+  reset: any;
+  clearErrors: any;
+}
+const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
+  const [formFunctions, setFormFunctions] = useState<formFunctionsProps>();
+  console.log(formFunctions, "formFunctionsformFunctions");
+  const number = formFunctions?.watch("password");
+  const name = formFunctions?.watch("userName");
+  console.log(name, "numbernumber");
+  const submitForm: any = (values:any) => {
+    console.log(values, "smsms");
+  };
+  return (
+    <>
+      <FormRenderWrapper
+        {...props}
+        name={"myName"}
+        setFormFunctions={setFormFunctions}
+      />
+      <button onClick={() => formFunctions?.handleSubmit(submitForm)()}>
+        Submit
+      </button>
+      <button onClick={() => formFunctions?.setValue("password", 9292992)}>
+        Change
+      </button>
+    </>
+  );
 };
 
-const Template: StoryFn<FormRenderProps> = (args:any) => <FormComponent {...args} />;
+const Template: StoryFn<FormRenderWrapperProps> = (args: any) => (
+  <FormComponent {...args} />
+);
 
 export const RenderFormComponent = Template.bind({});
 RenderFormComponent.args = {
-  item: {
-    name: 'text',
-    inputType: 'multiselect',
-    label: 'Text',
-    required: true,
-    errorMessage: 'Please enter text'
-  }
+  formArray: [
+    {
+      name: "userName",
+      label: "User Name",
+      inputType: "text",
+      required: true,
+      errorMessage: "Please enter",
+    },
+    {
+      name: "password",
+      label: "Password",
+      inputType: "number",
+      required: true,
+      errorMessage: "Please enter",
+    },
+    {
+      name: "djj",
+      label: "Password",
+      inputType: "datepicker",
+      required: true,
+      errorMessage: "Please select message",
+    },
+  ],
 };

@@ -7,7 +7,7 @@ import { ErrorMessageComponent } from "../Form.styles";
 
 const useStyles = makeStyles((theme) => ({
   option: {
-    fontSize: "11px", 
+    fontSize: "11px",
     fontFamily: "Roboto-Reg",
     zIndex: 2000,
   },
@@ -38,7 +38,8 @@ const SingleSelect = ({ props }: any) => {
             value={
               props.getValues(props.item.name)
                 ? props.item.options?.find(
-                    (item:any) => item.value === props.getValues(props.item.name)
+                    (item: any) =>
+                      item.value === props.getValues(props.item.name)
                   )
                 : null
             }
@@ -53,9 +54,10 @@ const SingleSelect = ({ props }: any) => {
               "& .MuiAutocomplete-input": {
                 padding: "0px 0px 0px 5px !important",
               },
-              "& .css-erkti9-MuiFormLabel-root-MuiInputLabel-root,.css-8edmr2-MuiFormLabel-root-MuiInputLabel-root": {
-                top: "-3px",
-              },
+              "& .css-erkti9-MuiFormLabel-root-MuiInputLabel-root,.css-8edmr2-MuiFormLabel-root-MuiInputLabel-root":
+                {
+                  top: "-3px",
+                },
             }}
             ListboxProps={{
               onScroll: (event: React.SyntheticEvent) => {

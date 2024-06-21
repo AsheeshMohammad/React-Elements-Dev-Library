@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import FormRenderWrapper from "./components/Form/FormRenderWrapper";
+import { FormSectionPropsItem } from "./components/Form/FormRender";
 
 function App() {
+  const form:FormSectionPropsItem[]=[
+    {
+      name:'userName',
+      label:'User Name',
+      inputType:'text'
+    },
+    {
+      name:'password',
+      label:'Password',
+      inputType:'number'
+    },
+  ]
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Reactsmsmsm
-        </a>
-      </header>
-    </div>
+    <>
+    Hii
+    </>
   );
 }
 

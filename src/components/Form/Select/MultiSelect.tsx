@@ -136,3 +136,12 @@
 // };
 
 // export default MultiSelect;
+import React from 'react'
+
+const MultiSelect = () => {
+  return (
+    <div>MultiSelect</div>
+  )
+}
+
+export default MultiSelect

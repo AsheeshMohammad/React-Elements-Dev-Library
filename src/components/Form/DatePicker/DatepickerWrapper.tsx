@@ -71,3 +71,12 @@
 // };
 
 // export default DatepickerWrapper;
+import React from 'react'
+
+const DatepickerWrapper = () => {
+  return (
+    <div>DatepickerWrapper</div>
+  )
+}
+
+export default DatepickerWrapper

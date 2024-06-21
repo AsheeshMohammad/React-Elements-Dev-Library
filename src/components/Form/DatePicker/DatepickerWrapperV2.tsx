@@ -58,6 +58,7 @@ const DatepickerWrapperV2 = ({ props }: any) => {
               }}
               minDate={props?.item?.minDate || null}
               maxDate={props?.item?.maxDate || null}
+            
             />
           </LocalizationProvider>
           {props?.item?.helperText && (

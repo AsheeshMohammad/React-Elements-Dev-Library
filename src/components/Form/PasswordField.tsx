@@ -11,44 +11,62 @@ const PasswordField = ({ props }: any) => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
   return (
-    <FormControl fullWidth >
+    <FormControl fullWidth>
       {" "}
       <Controller
         control={props.control}
         name={props.item.name}
         render={({ field }) => (
           <>
-           <Box sx={{position:'relative'}}> <TextField
-              type={showPassword ? "text" : "password"}
-              {...field}
-              label={props.item.label}
-              sx={{
-                width: "100%",
-                "& .css-kichxs-MuiFormLabel-root-MuiInputLabel-root,.css-1holvmy":
-                  {
-                    top: "-8px",
-                  },
-              }}
-              value={field.value || null}
-              disabled={props.item.disable}
-            />
-            <IconButton
-              sx={{
-                position: "absolute",
-                right: "14px",
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-              aria-label="toggle password visibility"
-              onClick={handleTogglePasswordVisibility}
-              edge="end"
-            >
-              {showPassword ? (
-                <Visibility sx={{ fontSize: "12px",position:'absolute',top:'22%',right:10 }} />
-              ) : (
-                <VisibilityOff sx={{ fontSize: "12px",position:'absolute',top:'22%',right:10 }} />
-              )}
-            </IconButton></Box>
+            <Box sx={{ position: "relative" }}>
+              {" "}
+              <TextField
+                size="small"
+                type={showPassword ? "text" : "password"}
+                {...field}
+                label={props.item.label}
+                sx={{
+                  width: "100%",
+                  "& .css-kichxs-MuiFormLabel-root-MuiInputLabel-root,.css-1holvmy":
+                    {
+                      top: "-8px",
+                    },
+                }}
+                value={field.value || null}
+                disabled={props.item.disable}
+              />
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  right: "14px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                }}
+                aria-label="toggle password visibility"
+                onClick={handleTogglePasswordVisibility}
+                edge="end"
+              >
+                {showPassword ? (
+                  <Visibility
+                    sx={{
+                      fontSize: "12px",
+                      position: "absolute",
+                      top: "22%",
+                      right: 10,
+                    }}
+                  />
+                ) : (
+                  <VisibilityOff
+                    sx={{
+                      fontSize: "12px",
+                      position: "absolute",
+                      top: "22%",
+                      right: 10,
+                    }}
+                  />
+                )}
+              </IconButton>
+            </Box>
             <ErrorMessageComponent>
               <ErrorMessage errors={props.errors} name={props.item.name} />
             </ErrorMessageComponent>

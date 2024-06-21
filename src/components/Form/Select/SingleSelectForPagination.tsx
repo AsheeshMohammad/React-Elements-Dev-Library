@@ -40,3 +40,12 @@
 // };
 
 // export default SingleSelectForPagination;
+import React from 'react'
+
+const SingleSelectForPagination = () => {
+  return (
+    <div>SingleSelectForPagination</div>
+  )
+}
+
+export default SingleSelectForPagination
