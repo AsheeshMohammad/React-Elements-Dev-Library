@@ -1,0 +1,204 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: #f8f8f8;
+  height: 100vh;
+}
+
+body {
+  background: #f8f8f8 !important;
+  overflow-x: hidden;
+  font-family: 'Roboto';
+}
+
+.MuiAccordionSummary-expandIconWrapper {
+  color: #fff !important;
+}
+
+.MuiAccordionSummary-root {
+  &.Mui-expanded {
+    min-height: 40px !important;
+  }
+}
+
+.MuiAccordionSummary-content {
+  &.Mui-expanded {
+    margin: 0 !important;
+
+    div {
+      margin: 12px 0 !important;
+    }
+  }
+}
+
+.action_icons {
+  display: none;
+}
+
+.list_action:hover {
+  .action_icons {
+    display: block;
+    position: absolute;
+    background: #fff;
+    box-shadow: 0px 0px 10px #7f7f7f;
+    padding: 10px;
+    list-style-type: none;
+    border-radius: 10px;
+    -moz-column-count: 2;
+    column-count: 2;
+    left: 60px;
+    top: auto 12px;
+    margin-top: -20px;
+    z-index: 110;
+    // display: flex;
+    // gap: 5px;
+  }
+}
+
+.action_icons {
+  &:hover {
+    display: flex;
+    flex-direction: column;
+  }
+
+  li {
+    color: #0a8fdc;
+    cursor: pointer;
+    padding: 5px 0px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.action_icons li:hover {
+  color: #266c9a;
+  text-decoration: underline;
+}
+
+.action_icons li svg {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.product-table {
+  // width:auto;
+  thead {
+    tr {
+      background: #edf3f7;
+
+      th {
+        &:nth-child(4) {
+          width: 120px;
+        }
+        &:nth-child(7) {
+          width: 50px;
+        }
+        &:nth-child(6) {
+          width: 100px;
+        }
+        &:nth-child(2) {
+          width: 60px;
+        }
+        &:nth-child(3) {
+          width: 100px;
+        }
+        &:nth-child(5) {
+          width: 125px;
+        }
+        &:nth-child(8) {
+          width: 100px;
+        }
+        &:nth-child(9) {
+          width: 100px;
+        }
+        &:nth-child(10) {
+          width: 100px;
+        }
+        &:nth-child(11) {
+          width: 90px;
+        }
+        &:nth-child(12) {
+          width: 80px;
+        }
+        &:nth-child(13) {
+          width: 100px;
+        }
+        &:nth-child(14) {
+          width: 50px;
+        }
+        &:nth-child(16) {
+          width: 120px;
+        }
+        &:nth-child(15) {
+          width: 60px;
+        }
+        &:nth-child(17) {
+          width: 130px;
+        }
+        &:nth-child(1) {
+          width: 50px;
+        }
+        &:last-child {
+          width: 60px;
+        }
+      }
+    }
+  }
+}
+
+.MuiButton-root {
+  box-shadow: none !important;
+}
+
+.description-card {
+  height: 100%;
+}
+
+.danger-badge {
+  color: #dc3545;
+  display: inline-block;
+  padding: 2px 14px;
+  border-radius: 10px;
+  // color: white;
+}
+
+.success-badge {
+  color: #198754;
+  display: inline-block;
+  padding: 2px 14px;
+  border-radius: 10px;
+  // color: white;
+}
+
+.menu-wrapper {
+  p {
+    color: white !important;
+  }
+}
+
+.menu-wrapper {
+  .second-level-wrapper {
+    p {
+      color: black !important;
+    }
+  }
+}
+
+.menu-item-wrapper {
+  &:hover {
+    h6,
+    svg,
+    p {
+      color: #000 !important;
+    }
+  }
+}
+.css-12qr4rk-MuiTableCell-root {
+  padding: 16px 0px 16px 14px !important;
+  font-size: 11px;
+}

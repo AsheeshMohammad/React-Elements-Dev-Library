@@ -1,133 +1,64 @@
 import React, { useEffect } from "react";
 import RenderForm, { FormSectionPropsItem } from "./FormRender";
-import { useForm } from "react-hook-form";
+import {
+  FieldValues,
+  Form,
+  UseFormReturn,
+  useForm,
+  useFormContext,
+  useFormState,
+} from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormComponent, Formitem } from "./Form.styles";
+import { useFormControl } from "@mui/material";
+import customTheme from "../../theme";
+import { ThemeProvider } from "@emotion/react";
 
-export interface FormRenderWrapperProps{
+export interface FormRenderWrapperProps {
   formArray: FormSectionPropsItem[];
   name: string;
-  setFormFunctions: any;
-  numberOfColumns?:number
+  numberOfColumns?: number;
+  form: UseFormReturn<FieldValues, any, undefined>;
 }
 const FormRenderWrapper = ({
   formArray,
   name,
-  setFormFunctions,
-  numberOfColumns=3
+  numberOfColumns = 3,
+  form,
 }: FormRenderWrapperProps) => {
-  const initialValues: any = {};
-  const validationShape: any = {};
-  formArray.forEach((field: FormSectionPropsItem) => {
-    switch (field.inputType) {
-      case "text":
-        initialValues[field.name] = "";
-        if (field.required) {
-          validationShape[field.name] = Yup.string()
-            .typeError(`Select ${field.label}`)
-            .required(field.errorMessage);
-        }
-        break;
-      case "number":
-        initialValues[field.name] = null;
-        if (field.required) {
-          validationShape[field.name] = Yup.number()
-            .nullable()
-            .typeError(`Enters ${field.label}`)
-            .required(field.errorMessage);
-        }
-        break;
-      case "password":
-        initialValues[field.name] = '';
-        if (field.required) {
-          validationShape[field.name] = Yup.number()
-            .nullable()
-            .typeError(`Enters ${field.label}`)
-            .required(field.errorMessage);
-        }
-        break;
-      case "select":
-        initialValues[field.name] = "";
-        if (field.required) {
-          validationShape[field.name] = Yup.string()
-            .typeError(`Select ${field.label}`)
-            .required(field.errorMessage);
-        }
-        break;
-      case "multiselect":
-        initialValues[field.name] = null;
-        if (field.required) {
-          validationShape[field.name] = validationShape[field.name] = Yup.string()
-          .typeError(`Select atleast one ${field.label}`)
-          .required(field.errorMessage);
-        }
-        break;
-      default:
-        initialValues[field.name] = null; // default value if inputType is not recognized
-        if (field.required) {
-          validationShape[field.name] = Yup.mixed().required(
-            field.errorMessage
-          );
-        }
-        break;
-    }
-  });
-  const validationSchema = Yup.object().shape(validationShape);
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    clearErrors,
-    watch,
-    control,
-    getValues,
-    reset,
-    formState: { errors },
-  } = useForm({
-    defaultValues: initialValues,
-    resolver: yupResolver(validationSchema),
-  });
-  useEffect(() => {
-    setFormFunctions({
-      handleSubmit,
-      setValue,
-      clearErrors,
-      watch,
-      control,
-      getValues,
-      reset,
-    });
-  }, [
-    handleSubmit,
-    setFormFunctions,
-    setValue,
-    watch,
-    register,
-    control,
-    errors,
-    getValues,
-    reset,
-    clearErrors,
-  ]);
+  // const formContext=useFormControl({
+  // })
+  // useEffect(() => {
+  //   // form.reset(initialValues, { resolver: yupResolver(validationSchema) });
+  // }, [formArray, validationSchema, initialValues]);
 
-  return <FormComponent container  margin={"auto"}>{
-    formArray.map((item,i:number) => {
-    return (
-      <Formitem  key={i} container sx={item.CustomProps} noOfColumn={item.numberOfColumns || numberOfColumns}>
-        <RenderForm
-          item={item}
-          register={register}
-          control={control}
-          errors={errors}
-          getValues={getValues}
-          clearErrors={clearErrors}
-          setValue={setValue}
-        />
-      </Formitem>
-    );
-  })}
-  </FormComponent>
+  return (
+    <ThemeProvider theme={customTheme}>
+      <FormComponent container margin={"auto"}>
+        {formArray.map((item, i: number) => {
+          return (
+            <Formitem
+              key={i}
+              container
+              sx={item.CustomProps}
+              noOfColumn={item.numberOfColumns || numberOfColumns}
+            >
+              <RenderForm
+                item={item}
+                register={form.register}
+                control={form.control}
+                errors={form.formState.errors}
+                getValues={form.getValues}
+                clearErrors={form.clearErrors}
+                setValue={form.setValue}
+              />
+            </Formitem>
+          );
+        })}
+      </FormComponent>
+      </ThemeProvider>
+  );
 };
 
 export default FormRenderWrapper;

@@ -48,7 +48,7 @@ const DatepickerWrapperV2 = ({ props }: any) => {
                 },
               }}
               sx={{
-                "& .css-lqj8pz-MuiFormLabel-root-MuiInputLabel-root,.css-zy8vme,.css-1holvmy":
+                "& .css-lqj8pz-MuiFormLabel-root-MuiInputLabel-root,.css-zy8vme,.css-1holvmy,.css-kichxs-MuiFormLabel-root-MuiInputLabel-root":
                   {
                     top: "-10px !important",
                   },

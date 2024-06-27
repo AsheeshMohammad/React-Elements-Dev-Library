@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Meta, StoryFn } from "@storybook/react/types-6-0";
 import RenderForm, {
   FormRenderProps,
   FormSectionPropsItem,
 } from "./FormRender";
 import {
+  Form,
+  FormProvider,
   SubmitErrorHandler,
   SubmitHandler,
   UseFormHandleSubmit,
   useForm,
+  useFormContext,
 } from "react-hook-form";
 import FormRenderWrapper, { FormRenderWrapperProps } from "./FormRenderWrapper";
+import useFormValidatingContext from "./FormConstants";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default {
   title: "Components/Form",
@@ -28,25 +33,23 @@ interface formFunctionsProps {
   clearErrors: any;
 }
 const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
-  const [formFunctions, setFormFunctions] = useState<formFunctionsProps>();
-  console.log(formFunctions, "formFunctionsformFunctions");
-  const number = formFunctions?.watch("password");
-  const name = formFunctions?.watch("userName");
-  console.log(name, "numbernumber");
-  const submitForm: any = (values:any) => {
+  const { initialValues, validationSchema } = useFormValidatingContext(
+    props.formArray
+  );
+  const form = useForm({
+    defaultValues: initialValues,
+    resolver: yupResolver(validationSchema),
+  });
+  const data = form.watch("userName");
+
+  const submitForm: any = (values: any) => {
     console.log(values, "smsms");
   };
   return (
     <>
-      <FormRenderWrapper
-        {...props}
-        name={"myName"}
-        setFormFunctions={setFormFunctions}
-      />
-      <button onClick={() => formFunctions?.handleSubmit(submitForm)()}>
-        Submit
-      </button>
-      <button onClick={() => formFunctions?.setValue("password", 9292992)}>
+      <FormRenderWrapper {...props} name={"myName"} form={form} />
+      <button onClick={() => form?.handleSubmit(submitForm)()}>Submit</button>
+      <button onClick={() => form?.setValue("password", 9292992)}>
         Change
       </button>
     </>
@@ -75,10 +78,16 @@ RenderFormComponent.args = {
       errorMessage: "Please enter",
     },
     {
-      name: "djj",
+      name: "date",
       label: "Password",
       inputType: "datepicker",
       required: true,
+      errorMessage: "Please select message",
+    },
+    {
+      name: "daterange",
+      label: "Password",
+      inputType: "dateRangePicker",
       errorMessage: "Please select message",
     },
   ],

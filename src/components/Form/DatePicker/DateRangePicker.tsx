@@ -65,6 +65,8 @@ console.log(convertDateFormat(props.getValues('ToDate')),'Datataa');
       setOpen(false)
     }
   },[props.getValues('ToDate')])
+  console.log(props.getValues('ToDate'),'props.getValues');
+  
   console.log(props.getValues('FromDate'),props.getValues('FromDate'),'from date range picker');
   
   const value =
@@ -87,7 +89,7 @@ console.log(convertDateFormat(props.getValues('ToDate')),'Datataa');
     >
       <TextField
         label={props.item.label}
-        value={value}
+        value={value || null}
         className="read-only"
         inputRef={textRef}
         sx={{width:'100%','& input':{cursor:'pointer'}}}
