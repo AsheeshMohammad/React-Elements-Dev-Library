@@ -40,7 +40,9 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     defaultValues: initialValues,
     resolver: yupResolver(validationSchema),
   });
-  const data = form.watch("userName");
+  const data = form.watch("yearpicker");
+  console.log(data,'hhshhs');
+  
 
   const submitForm: any = (values: any) => {
     console.log(values, "smsms");
@@ -49,7 +51,7 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     <>
       <FormRenderWrapper {...props} name={"myName"} form={form} />
       <button onClick={() => form?.handleSubmit(submitForm)()}>Submit</button>
-      <button onClick={() => form?.setValue("password", 9292992)}>
+      <button onClick={() => form?.setValue("password", "Asheesh")}>
         Change
       </button>
     </>
@@ -83,12 +85,57 @@ RenderFormComponent.args = {
       inputType: "datepicker",
       required: true,
       errorMessage: "Please select message",
+      minDate:'30/06/2024',
+      maxDate:'22/07/2024'
+    },
+    {
+      name: "password1",
+      label: "Password New",
+      inputType: "password",
+      required: true,
+      errorMessage: "Please select message",
     },
     {
       name: "daterange",
       label: "Password",
+      required:true,
+      inputType: "multiselect",
+      options:[{label:'hi',value:'2'},{label:'hi',value:'4'},]
+    },
+    {
+      name: "daterangepicker",
+      label: "Date range Picker",
+      required:true,
       inputType: "dateRangePicker",
-      errorMessage: "Please select message",
+      monthSpan:1
+    },
+    {
+      name: "status",
+      label: "",
+      inputType: "toggleSwitch",
+      monthSpan:1
+    },
+    {
+      name: "yearpicker",
+      label: "Year",
+      required:true,
+      inputType: "yearpicker",
+      monthSpan:1
+    },
+    {
+      name: "monthpicker",
+      label: "Month Picker",
+      required:true,
+      inputType: "monthpicker",
+      monthSpan:1
+    },
+    {
+      name: "file",
+      label: "File Upload",
+      required:true,
+      inputType: "file",
+      monthSpan:1
     },
   ],
+  numberOfColumns:2
 };

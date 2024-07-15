@@ -23,7 +23,7 @@ const DatepickerWrapperV2 = ({ props }: any) => {
         <>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              label={props.item.label}
+              label={`${props.item.label}${props.item.required ? ' *' : ''}`}
               value={
                 typeof field.value === "string"
                   ? dayjs(field.value, "DD/MM/YYYY")
@@ -33,7 +33,7 @@ const DatepickerWrapperV2 = ({ props }: any) => {
               className="read-only"
               format="DD/MM/YYYY"
               disabled={props.item.disable || false}
-              onChange={(date) => {
+              onChange={(date:any) => {
                 field.onChange(dayjs(date).format("DD/MM/YYYY"));
                 props?.item?.onChangeFn && props?.item?.onChangeFn();
               }}
@@ -56,8 +56,8 @@ const DatepickerWrapperV2 = ({ props }: any) => {
                   cursor: "pointer",
                 },
               }}
-              minDate={props?.item?.minDate || null}
-              maxDate={props?.item?.maxDate || null}
+              minDate={props?.item?.minDate ? dayjs(props?.item?.minDate,'DD/MM/YYYY') : null}
+              maxDate={props?.item?.maxDate ? dayjs(props?.item?.maxDate,'DD/MM/YYYY') : null}
             
             />
           </LocalizationProvider>

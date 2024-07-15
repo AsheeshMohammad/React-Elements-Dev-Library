@@ -2,17 +2,15 @@ import React, { useEffect, useState } from "react";
 import "../Form/FormsStyles.scss";
 const FormActiveSwitch = ({ props }: any) => {
   const [active, setActive] = useState(
-    props.getValues(props.item.name) === "A" ? true : false
+    props.getValues(props.item.name)
   ); // Assuming "Active" is the default
 
   const handleSwitchChange = () => {
     setActive(!active);
   };
   useEffect(() => {
-    props.setValue(props.item.name, active ? "A" : "I");
+    props.setValue(props.item.name, active);
   }, [active]);
-  console.log(props.getValues(props.item.name),props.item.name,'sjsnjsjsjs');
-  
 
   return (
     <div>

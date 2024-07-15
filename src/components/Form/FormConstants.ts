@@ -1,7 +1,7 @@
 import { FormSectionPropsItem } from "./FormRender";
 import * as Yup from "yup";
 export interface InitialValues {
-  [key: string]: string | number | null;
+  [key: string]: string | number | null | boolean;
 }
 export interface ValidationShape {
   [key: string]: Yup.Schema<any>;
@@ -64,6 +64,27 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
               .required(field.errorMessage);
         }
         break;
+      case "yearpicker":
+        initialValues[field.name] = null;
+        if (field.required) {
+          validationShape[field.name] = validationShape[field.name] =
+            Yup.string()
+              .typeError(`Select ${field.label}`)
+              .required(field.errorMessage);
+        }
+        break;
+      case "monthpicker":
+        initialValues[field.name] = null;
+        if (field.required) {
+          validationShape[field.name] = validationShape[field.name] =
+            Yup.string()
+              .typeError(`Select ${field.label}`)
+              .required(field.errorMessage);
+        }
+        break;
+      case "toggleSwitch":
+        initialValues[field.name] = true;
+        break;
       case "dateRangePicker":
         const today = new Date();
         const day = String(today.getDate()).padStart(2, "0");
@@ -72,7 +93,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
 
         const formattedDate = `${day}/${month}/${year}`;
         const threeMonthsAgo = new Date(today);
-        threeMonthsAgo.setMonth(today.getMonth() - 3);
+        threeMonthsAgo.setMonth(today.getMonth() - (field.monthSpan ?? 3));
 
         const dayBeforeThreeMonths = String(threeMonthsAgo.getDate()).padStart(
           2,

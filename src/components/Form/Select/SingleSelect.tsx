@@ -95,7 +95,7 @@ const SingleSelect = ({ props }: any) => {
                   <TextField
                     {...params}
                     placeholder={props.item.Placeholder}
-                    label={props.item.label}
+                    label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                   />
                 </Tooltip>
               );

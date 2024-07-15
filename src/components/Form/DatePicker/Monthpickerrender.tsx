@@ -5,18 +5,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ErrorMessageComponent } from "../Form.styles";
 import { formatDateMonthAndYear } from "../FormRender";
 import { ClickAwayListener } from "@mui/base";
 
 const Monthpickerrender = ({ props }:any) => {
-  const ref = useRef<any>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [calenderOpen, setCalenderOpen] = useState(false);
-  //   const { onAccept, onClear, onCancel, onSetToday, actions, className } = props;
-  // useEffect(() => {
-  //   setCalenderOpen(false);
-  // }, [props.getValues(props.item.name)]);
   return (
     <Controller
       control={props.control}
@@ -27,12 +23,12 @@ const Monthpickerrender = ({ props }:any) => {
             <ClickAwayListener onClickAway={() => setCalenderOpen(false)}>
               <DatePicker
                 ref={ref}
-                label={props.item.label}
-                views={["month", "year"]}
+                label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                views={["month","year"]}
                 disabled={props.item.disable}
                 value={
                   field.value
-                    ? dayjs(formatDateMonthAndYear(field.value))
+                    ? dayjs(formatDateMonthAndYear(field.value || null))
                     : null
                 }
                 slotProps={{
@@ -46,7 +42,7 @@ const Monthpickerrender = ({ props }:any) => {
                 // onYearChange={() => setCalenderOpen(false)}
                 open={calenderOpen}
                 defaultValue={field.value}
-                onChange={(date) => {
+                onChange={(date:any) => {
                   field.onChange(dayjs(date).format("MM/YYYY"));
                   props.setValue(dayjs(date).format("MM/YYYY"));
                 }}
@@ -76,21 +72,6 @@ const Monthpickerrender = ({ props }:any) => {
                 //     }}
                 //   />
                 // )}
-                slots={{
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  textField: (textFieldProps:any) => <TextField
-                  {...textFieldProps}
-                  fullWidth
-                  disabled={props.item.disable || false}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  error={props.errors}
-                  inputProps={{
-                    min: props.item.minDate,
-                  }}
-                />
-                }}
                 // ToolbarComponent={({ date, decreaseMonth, increaseMonth }:any) => (
                 //   <div>
                 //     <button onClick={decreaseMonth}>&lt;</button>

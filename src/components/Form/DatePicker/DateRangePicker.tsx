@@ -88,7 +88,7 @@ console.log(convertDateFormat(props.getValues('ToDate')),'Datataa');
       }}
     >
       <TextField
-        label={props.item.label}
+        label={`${props.item.label}${props.item.required ? ' *' : ''}`}
         value={value || null}
         className="read-only"
         inputRef={textRef}

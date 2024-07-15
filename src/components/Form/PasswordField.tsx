@@ -24,7 +24,7 @@ const PasswordField = ({ props }: any) => {
                 size="small"
                 type={showPassword ? "text" : "password"}
                 {...field}
-                label={props.item.label}
+                label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                 sx={{
                   width: "100%",
                   "& .css-kichxs-MuiFormLabel-root-MuiInputLabel-root,.css-1holvmy":
@@ -41,6 +41,7 @@ const PasswordField = ({ props }: any) => {
                   right: "14px",
                   top: "50%",
                   transform: "translateY(-50%)",
+                  width:'25px'
                 }}
                 aria-label="toggle password visibility"
                 onClick={handleTogglePasswordVisibility}
@@ -51,8 +52,6 @@ const PasswordField = ({ props }: any) => {
                     sx={{
                       fontSize: "12px",
                       position: "absolute",
-                      top: "22%",
-                      right: 10,
                     }}
                   />
                 ) : (
@@ -60,8 +59,6 @@ const PasswordField = ({ props }: any) => {
                     sx={{
                       fontSize: "12px",
                       position: "absolute",
-                      top: "22%",
-                      right: 10,
                     }}
                   />
                 )}

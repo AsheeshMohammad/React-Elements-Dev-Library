@@ -23,10 +23,10 @@ const FormRenderFileUpload = ({props}:any) => {
             const fileName = file ? file.name : null;
             props.setValue(props.item?.name, file);
             props.setValue(props.item?.name + "Name", fileName);
-            props.item.onChangeInput({
-              [props.item.name]: file,
-              [props.item.name + "Name"]: fileName,
-            });
+            // props?.item?.onChangeInput({
+            //   [props.item.name]: file,
+            //   [props.item.name + "Name"]: fileName,
+            // });
           }}
           sx={{ width: "100%" }}
         />

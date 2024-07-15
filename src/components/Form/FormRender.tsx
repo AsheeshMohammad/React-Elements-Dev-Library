@@ -19,6 +19,7 @@ import Monthpickerrender from "./DatePicker/Monthpickerrender";
 import DatepickerWrapperV2 from "./DatePicker/DatepickerWrapperV2";
 import FormRenderFileUpload from "./FileUpload/FormRenderFileUpload";
 import SingleSelectNonAutoComplete from "./Select/SingleSelectNonAutoComplete";
+import FormActiveSwitch from "./FormActiveSwitch";
 export const renderLabel = (
   label: string,
   isRequired?: boolean,
@@ -37,6 +38,11 @@ export const renderLabel = (
   );
 };
 export function formatDateMonthAndYear(date: any) {
+  // Check if date is a string
+  if (typeof date !== 'string') {
+    throw new TypeError('Expected a string');
+  }
+
   // Split the date string into month and year
   const [month, year] = date.split("/");
 
@@ -46,6 +52,7 @@ export function formatDateMonthAndYear(date: any) {
   // Return the formatted date with day set to '01'
   return `${formattedMonth}/01/${year}`;
 }
+
 
 interface OptionsProps {
   label: string | boolean | number;
@@ -66,13 +73,13 @@ export interface FormSectionPropsItem {
     | "register-number"
     | "decimal"
     | "alpha-numerical"
-    | "datepicker"
     | "yearpicker"
     | "dateRangePicker"
     | "monthpicker"
     | "multiselect"
     | "file"
-    | "textarea";
+    | "textarea"
+    | "toggleSwitch";
   options?: OptionsProps[];
   required?: boolean;
   errorMessage?: string;
@@ -81,10 +88,12 @@ export interface FormSectionPropsItem {
   onChangeFn?: (e: string | number | undefined | null | boolean) => void;
   maxLength?: number;
   minDate?: string;
+  maxDate?: string;
   placeholder?: string;
   minRows?: string;
   CustomProps?: string;
   numberOfColumns?: number;
+  monthSpan?:number;
 }
 
 export interface FormRenderProps {
@@ -110,7 +119,7 @@ const RenderForm = (props: FormRenderProps) => {
                   {...field}
                   fullWidth
                   // error={props.errors}
-                  label={props.item.label}
+                  label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                   InputProps={{
                     style: {
                       fontFamily: "Roboto-Reg",
@@ -177,7 +186,7 @@ const RenderForm = (props: FormRenderProps) => {
                 <TextField
                   {...field}
                   fullWidth
-                  label={props.item.label}
+                  label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                   InputProps={{
                     style: {
                       fontFamily: "Roboto-Reg",
@@ -276,7 +285,7 @@ const RenderForm = (props: FormRenderProps) => {
                   <TextField
                     {...field}
                     size="small"
-                    label={props.item.label}
+                    label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                     value={props.getValues(props.item.name) || ""}
                     defaultValue={props.getValues(props.item.name) || null}
                     onInput={(e: any) => {
@@ -322,7 +331,7 @@ const RenderForm = (props: FormRenderProps) => {
                 <TextField
                   type="text"
                   size="small"
-                  label={props.item.label}
+                  label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                   {...field}
                   onChange={(e) =>
                     props?.clearErrors && props?.clearErrors(props.item.name)
@@ -595,10 +604,11 @@ const RenderForm = (props: FormRenderProps) => {
                           top: "-10px",
                         },
                     }}
-                    label={props.item.label}
+                    label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                     views={["year"]}
-                    value={dayjs(field.value)}
-                    onChange={(date) => field.onChange(date)}
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(date:any) => field.onChange(date)}
+                    // minDate={}
                     slots={{
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       textField: (textFieldProps: any) => (
@@ -609,38 +619,9 @@ const RenderForm = (props: FormRenderProps) => {
                           InputLabelProps={{
                             shrink: true,
                           }}
-                          error={props.errors}
-                          inputProps={{
-                            min: props.item.minDate,
-                          }}
                         />
                       ),
                     }}
-                    // renderInput={(params : any) => (
-                    //   <TextField
-                    //     {...params}
-                    //     fullWidth
-                    //     disabled={props.item.disable || false}
-                    //     InputLabelProps={{
-                    //       shrink: true,
-                    //     }}
-                    //     error={props.errors}
-                    //     inputProps={{
-                    //       min: props.item.minDate,
-                    //     }}
-                    //   />
-                    // )}
-                    // ToolbarComponent={({
-                    //   date,
-                    //   decreaseMonth,
-                    //   increaseMonth,
-                    // }:any) => (
-                    //   <div>
-                    //     <button onClick={decreaseMonth}>&lt;</button>
-                    //     <span>{date.getFullYear()}</span>
-                    //     <button onClick={increaseMonth}>&gt;</button>
-                    //   </div>
-                    // )}
                   />
                 </LocalizationProvider>
                 <ErrorMessageComponent>
@@ -724,7 +705,7 @@ const RenderForm = (props: FormRenderProps) => {
                   // maxRows={2}
                   placeholder={props.item.placeholder || "Type Something..."}
                   {...field}
-                  label={props.item.label}
+                  label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                   value={field.value || ""}
                   disabled={props.item.disable}
                 />
@@ -772,12 +753,12 @@ const RenderForm = (props: FormRenderProps) => {
     //       </ErrorMessageComponent>
     //     </>
     //   );
-    // case "activeSwitch":
-    //   return (
-    //     <>
-    //       <FormActiveSwitch props={props} />
-    //     </>
-    //   );
+    case "toggleSwitch":
+      return (
+        <>
+          <FormActiveSwitch props={props} />
+        </>
+      );
     // case "percentage-number":
     //   return (
     //     <>

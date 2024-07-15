@@ -24,7 +24,7 @@ const SingleSelectNonAutoComplete = ({ props } : any) => {
         id="demo-simple-select"
         // {...props.register(props.item.name)}
         value={props.getValues(props.item.name)}
-        label={props.item.label}
+        label={`${props.item.label}${props.item.required ? ' *' : ''}`}
         onChange={(e) => props.setValue(props.item.name, e.target.value)}
         // classes={{
         //   option:
