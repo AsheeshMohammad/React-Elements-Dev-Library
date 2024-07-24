@@ -19,8 +19,9 @@ export interface ConfirmationDialogProps{
   text:string;
   Submit?:string;
   Cancel?:string;
+  buttonStyleProps?:any
 }
-const ConfirmationDialog = ({openConfirmDialog,handleCancel,onClickSubmit,text,Submit='Submit',Cancel='Cancel'}:ConfirmationDialogProps) => {
+const ConfirmationDialog = ({openConfirmDialog,handleCancel,onClickSubmit,text,Submit='Submit',Cancel='Cancel',buttonStyleProps}:ConfirmationDialogProps) => {
   return (
     <Dialog
       open={openConfirmDialog}
@@ -82,6 +83,9 @@ const ConfirmationDialog = ({openConfirmDialog,handleCancel,onClickSubmit,text,S
             size="small"
             type="submit"
             onClick={() => onClickSubmit()}
+            sx={{
+              ...buttonStyleProps
+            }}
           >
             {Submit}
           </SubmitButton>

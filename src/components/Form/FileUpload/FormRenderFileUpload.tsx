@@ -2,6 +2,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Box, TextField } from "@mui/material";
 import { ErrorMessageComponent } from "../Form.styles";
 import { useEffect } from "react";
+import { renderLabel } from "../FormRender";
 
 const FormRenderFileUpload = ({props}:any) => {
 
@@ -14,6 +15,7 @@ const FormRenderFileUpload = ({props}:any) => {
   return (
     <>
       <Box paddingLeft={"4px"}>
+      {props.item?.label && <Box sx={{fontSize:"10px;"}}>{renderLabel(props.item?.label, props.item?.required)}</Box>}
         <TextField
           type="file"
           id={props.item.name}
@@ -23,10 +25,7 @@ const FormRenderFileUpload = ({props}:any) => {
             const fileName = file ? file.name : null;
             props.setValue(props.item?.name, file);
             props.setValue(props.item?.name + "Name", fileName);
-            // props?.item?.onChangeInput({
-            //   [props.item.name]: file,
-            //   [props.item.name + "Name"]: fileName,
-            // });
+
           }}
           sx={{ width: "100%" }}
         />

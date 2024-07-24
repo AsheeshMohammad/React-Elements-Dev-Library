@@ -90,7 +90,7 @@ export interface FormSectionPropsItem {
   minDate?: string;
   maxDate?: string;
   placeholder?: string;
-  minRows?: string;
+  minRows?: string | number;
   CustomProps?: string;
   numberOfColumns?: number;
   monthSpan?:number;
