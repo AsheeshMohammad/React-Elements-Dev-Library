@@ -100,6 +100,7 @@ RenderFormComponent.args = {
       label: "Password",
       required:true,
       inputType: "multiselect",
+      options:[]
     },
     {
       name: "daterangepicker",
@@ -136,5 +137,5 @@ RenderFormComponent.args = {
       monthSpan:1
     },
   ],
-  numberOfColumns:2
+  numberOfColumns:3,
 };

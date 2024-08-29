@@ -1,6 +1,6 @@
 {
   "name": "tp-react-elements-dev",
-  "version": "1.4.4",
+  "version": "1.4.7",
   "main": "dist/index.js",
   "private": false,
   "types": "dist/index.d.ts",
@@ -44,7 +44,7 @@
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "storybook-build": "rollup -c --bundleConfigAsCjs"
+    "package-build": "rollup -c --bundleConfigAsCjs"
   },
   "eslintConfig": {
     "extends": [

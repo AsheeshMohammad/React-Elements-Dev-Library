@@ -44,6 +44,9 @@ const DatepickerWrapperV2 = ({ props }: any) => {
                   // style: { input: { cursor: "pointer" } },
                   onClick: () => handleToggle(),
                   inputRef: inputTextRef,
+                  onBlur:(e:any)=>{
+                    props?.item?.onBlurFn && props?.item?.onBlurFn(e);
+                  }
                   // onFocus: () => inputTextRef.current?.blur(),
                 },
               }}

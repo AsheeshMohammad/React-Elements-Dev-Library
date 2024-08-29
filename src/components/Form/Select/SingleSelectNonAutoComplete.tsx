@@ -26,6 +26,9 @@ const SingleSelectNonAutoComplete = ({ props } : any) => {
         value={props.getValues(props.item.name)}
         label={`${props.item.label}${props.item.required ? ' *' : ''}`}
         onChange={(e) => props.setValue(props.item.name, e.target.value)}
+        onBlur={(e:any)=>{
+          props?.item?.onBlurFn && props?.item?.onBlurFn(e);
+        }}
         // classes={{
         //   option:
         //     props.item.size === "extrasmall" ? classes.option : classes.option2,

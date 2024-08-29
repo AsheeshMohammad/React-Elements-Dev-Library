@@ -14,33 +14,116 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
     switch (field.inputType) {
       case "text":
         initialValues[field.name] = "";
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = Yup.string()
-            .typeError(`Select ${field.label}`)
+            .typeError(field.errorMessage)
             .required(field.errorMessage);
         }
         break;
+      case "email":
+        initialValues[field.name] = "";
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.string()
+            .typeError(`Please enter ${field.label}`)
+            .required(field.errorMessage)
+            .test("valid-email", `Please enter valid Email`, (value) => {
+              return /\@.*\..+/.test(value);
+            });
+        } else {
+          validationShape[field.name] = Yup.string()
+            .typeError(`Please enter ${field.label}`)
+            .test("valid-email", `Please enter valid Email`, (value: any) => {
+              // Custom validation to check for at least one period after '@'
+              return !value || /\@.*\..+/.test(value);
+            });
+        }
+        break;
+      case "file":
+        initialValues[field.name] = null;
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.mixed()
+            .test("fileOrString", field?.errorMessage, (value) => {
+              return (
+                value instanceof File ||
+                (typeof value === "string" && value.trim() !== "")
+              );
+            })
+            .required(field.errorMessage);
+        }
+        break;
+
       case "number":
         initialValues[field.name] = null;
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = Yup.number()
             .nullable()
-            .typeError(`Enters ${field.label}`)
+            .typeError(field.errorMessage)
             .required(field.errorMessage);
+        }
+        break;
+      case "pincode":
+        initialValues[field.name] = null;
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.number()
+            .nullable()
+            .typeError(`Please enter PinCode`)
+            .required(field.errorMessage)
+            .test(
+              "is-six-digits",
+              `Please enter a 6-digit PinCode`,
+              (value) => {
+                if (value && field.variant === "PinCode") {
+                  const stringValue = value.toString();
+                  return stringValue.length === 6;
+                }
+                return false;
+              }
+            );
+        }
+        break;
+      case "phoneNumber":
+        initialValues[field.name] = null;
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.number()
+            .nullable()
+            .typeError(`Please enter Mobile Number`)
+            .required(field.errorMessage)
+            .test(
+              "is-two-digits",
+              `Please enter a 10-digit Mobile Number`,
+              (value) => {
+                if (value) {
+                  const stringValue = value.toString();
+                  return stringValue.length === 2;
+                }
+                return false;
+              }
+            );
+        } else {
+          validationShape[field.name] = Yup.number()
+            .nullable()
+            // .typeError(`Please enter Mobile Number`)
+            .test(
+              "is-two-digits",
+              `Please enter a 10-digit Mobile Number`,
+              (value: any) => {
+                return !value || value?.toString().length === 2;
+              }
+            );
         }
         break;
       case "password":
         initialValues[field.name] = "";
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = Yup.number()
             .nullable()
-            .typeError(`Enters ${field.label}`)
+            .typeError(`Please enter ${field.label}`)
             .required(field.errorMessage);
         }
         break;
       case "select":
         initialValues[field.name] = "";
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = Yup.string()
             .typeError(`Select ${field.label}`)
             .required(field.errorMessage);
@@ -48,7 +131,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         break;
       case "multiselect":
         initialValues[field.name] = null;
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = validationShape[field.name] =
             Yup.string()
               .typeError(`Select atleast one ${field.label}`)
@@ -57,7 +140,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         break;
       case "datepicker":
         initialValues[field.name] = null;
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = validationShape[field.name] =
             Yup.string()
               .typeError(`Select ${field.label}`)
@@ -66,7 +149,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         break;
       case "yearpicker":
         initialValues[field.name] = null;
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = validationShape[field.name] =
             Yup.string()
               .typeError(`Select ${field.label}`)
@@ -75,7 +158,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         break;
       case "monthpicker":
         initialValues[field.name] = null;
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = validationShape[field.name] =
             Yup.string()
               .typeError(`Select ${field.label}`)
@@ -108,7 +191,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
 
         initialValues["FromDate"] = formattedDateForThreeMonths;
         initialValues["ToDate"] = formattedDate;
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = validationShape[field.name] =
             Yup.string()
               .typeError(`Select ${field.label}`)
@@ -117,7 +200,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         break;
       default:
         initialValues[field.name] = null; // default value if inputType is not recognized
-        if (field.required) {
+        if (field.required && field.errorMessage) {
           validationShape[field.name] = Yup.mixed().required(
             field.errorMessage
           );

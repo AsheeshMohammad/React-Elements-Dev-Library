@@ -49,6 +49,9 @@ const SingleSelect = ({ props }: any) => {
                 props?.item?.onChangeFn(newValue?.value);
               props?.clearErrors && props?.clearErrors(props?.item?.name);
             }}
+            onBlur={(e:any)=>{
+              props?.item?.onBlurFn && props?.item?.onBlurFn(e);
+            }}
             size="small"
             sx={{
               "& .MuiAutocomplete-input": {

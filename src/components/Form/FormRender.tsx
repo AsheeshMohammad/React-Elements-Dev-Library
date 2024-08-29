@@ -79,13 +79,18 @@ export interface FormSectionPropsItem {
     | "multiselect"
     | "file"
     | "textarea"
-    | "toggleSwitch";
+    | "phoneNumber"
+    | "pincode"
+    | "email"
+    | "toggleSwitch"
+    | "";
   options?: OptionsProps[];
   required?: boolean;
   errorMessage?: string;
   helperText?: string;
   disable?: boolean;
   onChangeFn?: (e: string | number | undefined | null | boolean) => void;
+  onBlurFn?: (e: string | number | undefined | null | boolean) => void;
   maxLength?: number;
   minDate?: string;
   maxDate?: string;
@@ -94,6 +99,7 @@ export interface FormSectionPropsItem {
   CustomProps?: string;
   numberOfColumns?: number;
   monthSpan?:number;
+  variant?:string
 }
 
 export interface FormRenderProps {
@@ -108,6 +114,7 @@ export interface FormRenderProps {
 const RenderForm = (props: FormRenderProps) => {
   switch (props.item?.inputType) {
     case "text":
+    case "email":
       return (
         <>
           <Controller
@@ -155,6 +162,9 @@ const RenderForm = (props: FormRenderProps) => {
                   value={field.value || ""}
                   size="small"
                   disabled={props.item.disable}
+                  onBlur={(e:any)=>{
+                    props?.item?.onBlurFn && props?.item?.onBlurFn(e);
+                  }}
                 />
                 {props?.item?.helperText && (
                   <span
@@ -186,6 +196,9 @@ const RenderForm = (props: FormRenderProps) => {
                 <TextField
                   {...field}
                   fullWidth
+                  onBlur={(e:any)=>{
+                    props?.item?.onBlurFn && props?.item?.onBlurFn(e);
+                  }}
                   label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                   InputProps={{
                     style: {
@@ -274,6 +287,8 @@ const RenderForm = (props: FormRenderProps) => {
     //     </>
     //   );
     case "number":
+    case "pincode":
+    case "phoneNumber":
       return (
         <>
           <Controller
@@ -290,9 +305,15 @@ const RenderForm = (props: FormRenderProps) => {
                     defaultValue={props.getValues(props.item.name) || null}
                     onInput={(e: any) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                      if(e.target.value===""){
+                        e.target.value=null;
+                      }
                       props?.item?.onChangeFn &&
                         props?.item?.onChangeFn(e.target.value);
                       props?.clearErrors && props?.clearErrors(props.item.name);
+                    }}
+                    onBlur={(e:any)=>{
+                      props?.item?.onBlurFn && props?.item?.onBlurFn(e);
                     }}
                     sx={{
                       "& .css-1holvmy,.css-lqj8pz-MuiFormLabel-root-MuiInputLabel-root,.css-kichxs-MuiFormLabel-root-MuiInputLabel-root":
@@ -344,6 +365,9 @@ const RenderForm = (props: FormRenderProps) => {
                       {
                         top: "-5px",
                       },
+                  }}
+                  onBlur={(e:any)=>{
+                    props?.item?.onBlurFn && props?.item?.onBlurFn(e);
                   }}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                     // Allow numbers, a single decimal point, and negation in the input
