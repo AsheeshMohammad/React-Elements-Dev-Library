@@ -99,7 +99,8 @@ export interface FormSectionPropsItem {
   CustomProps?: string;
   numberOfColumns?: number;
   monthSpan?:number;
-  variant?:string
+  variant?:string;
+  allowSpecialChars?:boolean
 }
 
 export interface FormRenderProps {
@@ -164,6 +165,21 @@ const RenderForm = (props: FormRenderProps) => {
                   disabled={props.item.disable}
                   onBlur={(e:any)=>{
                     props?.item?.onBlurFn && props?.item?.onBlurFn(e);
+                  }}
+                  inputProps={{
+                    maxLength: props.item.maxLength || 100,
+                    onInput: (e: any) => {
+                      if (!props?.item?.allowSpecialChars) {
+                        const value = e.target.value;
+                        e.target.value = value.replace(/[^a-zA-Z0-9 ]/g, "");
+                      } // Allow only alphanumeric and space
+                      if (
+                        e.target.value.length === 1 &&
+                        e.target.value === " "
+                      ) {
+                        e.target.value = "";
+                      }
+                    },
                   }}
                 />
                 {props?.item?.helperText && (
