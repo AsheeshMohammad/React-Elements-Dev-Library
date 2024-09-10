@@ -128,6 +128,7 @@ const RenderForm = (props: FormRenderProps) => {
                   fullWidth
                   // error={props.errors}
                   label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                  placeholder={props.item.placeholder || ""}
                   InputProps={{
                     style: {
                       fontFamily: "Roboto-Reg",

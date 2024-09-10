@@ -23,6 +23,7 @@ const PasswordField = ({ props }: any) => {
               <TextField
                 size="small"
                 type={showPassword ? "text" : "password"}
+                placeholder={props.item.placeholder || ""}
                 {...field}
                 label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                 sx={{
