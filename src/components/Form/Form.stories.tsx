@@ -40,7 +40,7 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     defaultValues: initialValues,
     resolver: yupResolver(validationSchema),
   });
-  const data = form.watch("yearpicker");
+  const data = form.watch("status");
   console.log(data,'hhshhs');
   
 
@@ -54,6 +54,8 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
       <button onClick={() => form?.setValue("password", "Asheesh")}>
         Change
       </button>
+      <button onClick={() => form?.setValue("status", false)}>set status</button>
+      <button onClick={() => form?.setValue("status", true)}>Active set status</button>
     </>
   );
 };

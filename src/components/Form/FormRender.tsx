@@ -748,6 +748,20 @@ const RenderForm = (props: FormRenderProps) => {
                   label={`${props.item.label}${props.item.required ? ' *' : ''}`}
                   value={field.value || ""}
                   disabled={props.item.disable}
+                  inputProps={{
+                    onInput: (e: any) => {
+                      if (!props?.item?.allowSpecialChars) {
+                        const value = e.target.value;
+                        e.target.value = value.replace(/[^a-zA-Z0-9 ]/g, "");
+                      } // Allow only alphanumeric and space
+                      if (
+                        e.target.value.length === 1 &&
+                        e.target.value === " "
+                      ) {
+                        e.target.value = "";
+                      }
+                    },
+                  }}
                 />
                 <ErrorMessageComponent>
                   <ErrorMessage errors={props.errors} name={props.item.name} />
