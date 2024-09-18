@@ -40,9 +40,8 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     defaultValues: initialValues,
     resolver: yupResolver(validationSchema),
   });
-  const data = form.watch("status");
-  console.log(data,'hhshhs');
-  
+  const data = form.watch("filse");
+console.log(data,'password');
 
   const submitForm: any = (values: any) => {
     console.log(values, "smsms");
@@ -137,6 +136,14 @@ RenderFormComponent.args = {
       required:true,
       inputType: "file",
       monthSpan:1
+    },
+    {
+      name: "filse",
+      label: "PASSSWORD",
+      required:true,
+      inputType: "password",
+      monthSpan:1,
+      errorMessage:'Please enter pass'
     },
   ],
   numberOfColumns:3,

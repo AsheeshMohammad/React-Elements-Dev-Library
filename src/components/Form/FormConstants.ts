@@ -20,6 +20,14 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
             .required(field.errorMessage);
         }
         break;
+      case "password":
+        initialValues[field.name] = "";
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.string()
+            .typeError(field.errorMessage)
+            .required(field.errorMessage);
+        }
+        break;
       case "email":
         initialValues[field.name] = "";
         if (field.required && field.errorMessage) {
@@ -110,15 +118,6 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
                 return !value || value?.toString().length === 2;
               }
             );
-        }
-        break;
-      case "password":
-        initialValues[field.name] = "";
-        if (field.required && field.errorMessage) {
-          validationShape[field.name] = Yup.number()
-            .nullable()
-            .typeError(`Please enter ${field.label}`)
-            .required(field.errorMessage);
         }
         break;
       case "select":
