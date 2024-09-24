@@ -20,6 +20,8 @@ import DatepickerWrapperV2 from "./DatePicker/DatepickerWrapperV2";
 import FormRenderFileUpload from "./FileUpload/FormRenderFileUpload";
 import SingleSelectNonAutoComplete from "./Select/SingleSelectNonAutoComplete";
 import FormActiveSwitch from "./FormActiveSwitch";
+import { Theme } from "@emotion/react";
+import { SxProps } from "@mui/material";
 export const renderLabel = (
   label: string,
   isRequired?: boolean,
@@ -57,6 +59,9 @@ export function formatDateMonthAndYear(date: any) {
 interface OptionsProps {
   label: string | boolean | number;
   value: string | number;
+}
+interface TextFieldInputProps {
+  autoComplete:'new-password' | 'off'
 }
 
 export interface FormSectionPropsItem {
@@ -100,7 +105,10 @@ export interface FormSectionPropsItem {
   numberOfColumns?: number;
   monthSpan?:number;
   variant?:string;
-  allowSpecialChars?:boolean
+  allowSpecialChars?:boolean;
+  InputProps?:TextFieldInputProps;
+  customErrorMessage?:string | null;
+  sx?:SxProps<Theme>
 }
 
 export interface FormRenderProps {
@@ -113,6 +121,8 @@ export interface FormRenderProps {
   setValue: any;
 }
 const RenderForm = (props: FormRenderProps) => {
+  console.log(props,'propsprops',props.item.inputType);
+  
   switch (props.item?.inputType) {
     case "text":
     case "email":
@@ -159,6 +169,7 @@ const RenderForm = (props: FormRenderProps) => {
                         outline: "none",
                         border: "none", // Set border to none when input is focused
                       },
+                      ...props.item.sx
                   }}
                   // classes={{ option: { color: "red !important" } }}
                   value={field.value || ""}
@@ -255,6 +266,7 @@ const RenderForm = (props: FormRenderProps) => {
                         outline: "none",
                         border: "none", // Set border to none when input is focused
                       },
+                      ...props.item.sx
                   }}
                   // classes={{ option: { color: "red !important" } }}
                   value={field.value || ""}

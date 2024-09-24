@@ -11,7 +11,7 @@ import {
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormComponent, Formitem } from "./Form.styles";
-import { useFormControl } from "@mui/material";
+import { Box, useFormControl } from "@mui/material";
 import customTheme from "../../theme";
 import { ThemeProvider } from "@emotion/react";
 
@@ -35,29 +35,31 @@ const FormRenderWrapper = ({
 
   return (
     <ThemeProvider theme={customTheme}>
-      <FormComponent container margin={"auto"}>
-        {formArray.map((item, i: number) => {
-          return (
-            <Formitem
-              key={i}
-              container
-              sx={item.CustomProps}
-              noOfColumn={item.numberOfColumns || numberOfColumns}
-            >
-              <RenderForm
-                item={item}
-                register={form.register}
-                control={form.control}
-                errors={form.formState.errors}
-                getValues={form.getValues}
-                clearErrors={form.clearErrors}
-                setValue={form.setValue}
-              />
-            </Formitem>
-          );
-        })}
-      </FormComponent>
-      </ThemeProvider>
+      <Box component={'form'} autoComplete="off">
+        <FormComponent container margin={"auto"}>
+          {formArray.map((item, i: number) => {
+            return (
+              <Formitem
+                key={i}
+                container
+                sx={item.CustomProps}
+                noOfColumn={item.numberOfColumns || numberOfColumns}
+              >
+                <RenderForm
+                  item={item}
+                  register={form.register}
+                  control={form.control}
+                  errors={form.formState.errors}
+                  getValues={form.getValues}
+                  clearErrors={form.clearErrors}
+                  setValue={form.setValue}
+                />
+              </Formitem>
+            );
+          })}
+        </FormComponent>
+      </Box>
+    </ThemeProvider>
   );
 };
 

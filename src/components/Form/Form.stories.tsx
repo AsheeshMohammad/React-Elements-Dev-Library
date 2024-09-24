@@ -33,28 +33,134 @@ interface formFunctionsProps {
   clearErrors: any;
 }
 const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
+  const [password, setPassword] = useState<
+    string | number | boolean | null | undefined
+  >("");
+  const formArray2: FormSectionPropsItem[] = [
+    {
+      name: "userName",
+      label: "User Name",
+      inputType: "text",
+      required: true,
+      errorMessage: "Please enter",
+      customErrorMessage: password === "render" ? "Hii" : null,
+    },
+    {
+      name: "number",
+      label: "Number",
+      inputType: "select",
+      options:[],
+      required: true,
+      errorMessage: "Please enter Number",
+      InputProps: {
+        autoComplete: "new-password",
+      },
+      customErrorMessage: Number(password)>120 ? "Number is exceeding" : null,
+    },
+    {
+      name: "date",
+      label: "Password",
+      inputType: "datepicker",
+      required: true,
+      errorMessage: "Please select message",
+      minDate: "30/06/2024",
+      maxDate: "22/07/2024",
+    },
+    {
+      name: "password1",
+      label: "Password New",
+      inputType: "password",
+      required: true,
+      errorMessage: "Please select message",
+    },
+    {
+      name: "daterange",
+      label: "Password",
+      required: true,
+      inputType: "multiselect",
+      options: [],
+    },
+    {
+      name: "daterangepicker",
+      label: "Date range Picker",
+      required: true,
+      inputType: "dateRangePicker",
+      monthSpan: 1,
+    },
+    {
+      name: "status",
+      label: "",
+      inputType: "toggleSwitch",
+      monthSpan: 1,
+    },
+    {
+      name: "yearpicker",
+      label: "Year",
+      required: true,
+      inputType: "yearpicker",
+      monthSpan: 1,
+    },
+    {
+      name: "monthpicker",
+      label: "Month Picker",
+      required: true,
+      inputType: "monthpicker",
+      monthSpan: 1,
+    },
+    {
+      name: "file",
+      label: "File Upload",
+      required: true,
+      inputType: "file",
+      monthSpan: 1,
+    },
+    {
+      name: "filse",
+      label: "PASSSWORD",
+      required: true,
+      inputType: "password",
+      monthSpan: 1,
+      errorMessage: "Please enter pass",
+    },
+    {
+      name: "filse",
+      label: "PASSSWORD",
+      inputType: "phoneNumber",
+      monthSpan: 1,
+    },
+  ];
   const { initialValues, validationSchema } = useFormValidatingContext(
-    props.formArray
+    // props.formArray
+    formArray2
   );
-  const form = useForm({
+  var form = useForm({
     defaultValues: initialValues,
     resolver: yupResolver(validationSchema),
   });
   const data = form.watch("filse");
-console.log(data,'password');
-
+  console.log(data, "password");
+  const pass=form.watch('number');
+  useEffect(() => {
+    setPassword(pass)
+  }, [form.getValues()]);
+  console.log(form.formState.errors,'kjshgshj');
+  
   const submitForm: any = (values: any) => {
     console.log(values, "smsms");
   };
   return (
     <>
-      <FormRenderWrapper {...props} name={"myName"} form={form} />
+      <FormRenderWrapper formArray={formArray2} name={"myName"} form={form} />
       <button onClick={() => form?.handleSubmit(submitForm)()}>Submit</button>
       <button onClick={() => form?.setValue("password", "Asheesh")}>
         Change
       </button>
-      <button onClick={() => form?.setValue("status", false)}>set status</button>
-      <button onClick={() => form?.setValue("status", true)}>Active set status</button>
+      <button onClick={() => form?.setValue("status", false)}>
+        set status
+      </button>
+      <button onClick={() => form?.setValue("status", true)}>
+        Active set status
+      </button>
     </>
   );
 };
@@ -72,6 +178,7 @@ RenderFormComponent.args = {
       inputType: "text",
       required: true,
       errorMessage: "Please enter",
+      customErrorMessage: "Hii",
     },
     {
       name: "password",
@@ -79,6 +186,9 @@ RenderFormComponent.args = {
       inputType: "number",
       required: true,
       errorMessage: "Please enter",
+      InputProps: {
+        autoComplete: "new-password",
+      },
     },
     {
       name: "date",
@@ -86,65 +196,70 @@ RenderFormComponent.args = {
       inputType: "datepicker",
       required: true,
       errorMessage: "Please select message",
-      minDate:'30/06/2024',
-      maxDate:'22/07/2024'
+      minDate: "30/06/2024",
+      maxDate: "22/07/2024",
     },
     {
       name: "password1",
-      label: "Password New",
-      inputType: "password",
-      required: true,
-      errorMessage: "Please select message",
+      label: "number New",
+      inputType: "phoneNumber",
+      // required: true,
+      // errorMessage: "Please select message",
     },
     {
       name: "daterange",
-      label: "Password",
-      required:true,
+      label: "Passwordwww",
+      required: true,
       inputType: "multiselect",
-      options:[]
+      options: [
+        {
+          label:'Hii',
+          value:'lkjh'
+        }
+      ],
     },
     {
       name: "daterangepicker",
       label: "Date range Picker",
-      required:true,
+      required: true,
       inputType: "dateRangePicker",
-      monthSpan:1
+      monthSpan: 1,
     },
     {
       name: "status",
       label: "",
       inputType: "toggleSwitch",
-      monthSpan:1
+      monthSpan: 1,
     },
     {
       name: "yearpicker",
       label: "Year",
-      required:true,
+      required: true,
       inputType: "yearpicker",
-      monthSpan:1
+      monthSpan: 1,
     },
     {
       name: "monthpicker",
       label: "Month Picker",
-      required:true,
+      required: true,
       inputType: "monthpicker",
-      monthSpan:1
+      monthSpan: 1,
     },
     {
       name: "file",
       label: "File Upload",
-      required:true,
+      required: true,
       inputType: "file",
-      monthSpan:1
+      monthSpan: 1,
     },
     {
       name: "filse",
       label: "PASSSWORD",
-      required:true,
+      required: true,
       inputType: "password",
-      monthSpan:1,
-      errorMessage:'Please enter pass'
+      monthSpan: 1,
+      errorMessage: "Please enter pass",
     },
   ],
-  numberOfColumns:3,
+  numberOfColumns: 3,
 };

@@ -61,6 +61,7 @@ const SingleSelect = ({ props }: any) => {
                 {
                   top: "-3px",
                 },
+                ...props.item.sx
             }}
             ListboxProps={{
               onScroll: (event: React.SyntheticEvent) => {

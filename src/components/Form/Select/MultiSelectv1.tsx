@@ -41,6 +41,8 @@ const extractValuesToArray = (inputString: string) => {
 };
 
 export default function MultiSelectV1({ props }: any) {
+  console.log(props,'ksjh');
+  
   const [personName, setPersonName] = React.useState<string[]>(
     props.getValues(props.item.name)
       ? extractValuesToArray(props.getValues(props.item.name))
