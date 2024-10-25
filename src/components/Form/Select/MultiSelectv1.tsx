@@ -36,13 +36,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 const extractValuesToArray = (inputString: string) => {
   const valuesArray = inputString?.split(",");
-  const trimmedArray = valuesArray?.map((value:any) => value.trim());
+  const trimmedArray = valuesArray?.map((value: any) => value.trim());
   return trimmedArray;
 };
 
 export default function MultiSelectV1({ props }: any) {
-  console.log(props,'ksjh');
-  
+  console.log(props, "ksjh");
+
   const [personName, setPersonName] = React.useState<string[]>(
     props.getValues(props.item.name)
       ? extractValuesToArray(props.getValues(props.item.name))
@@ -54,15 +54,15 @@ export default function MultiSelectV1({ props }: any) {
   const [selectAll, setSelectAll] = useState(false);
   const textfieldRef = React.useRef<any>();
   const fieldValue = props.getValues(props.item.name);
-  const mappedIds = filterOptions.map((item:any) => item.value);
-  const filterIds = filterOptions.map((item:any) => item.value);
+  const mappedIds = filterOptions.map((item: any) => item.value);
+  const filterIds = filterOptions.map((item: any) => item.value);
   // console.log(props.getValues(props.item.name), "mnnmnmnnn");
 
   React.useEffect(() => {
     // setFilterOptions(options);
     if (searchText !== "") {
       setFilterOptions(
-        options.filter((item:any) =>
+        options.filter((item: any) =>
           item.label.toLowerCase().includes(searchText.toLowerCase())
         )
       );
@@ -78,8 +78,8 @@ export default function MultiSelectV1({ props }: any) {
   //     props.setValue(props.item.name, allDataMapped);
   //   }
   // }, [selectAll]);
-  function hasExactMatch(array:any[], value:any) {
-    return array.some((item:any) => item === value);
+  function hasExactMatch(array: any[], value: any) {
+    return array.some((item: any) => item === value);
   }
   React.useEffect(() => {
     if (fieldValue?.split(",").length !== filterOptions.length) {
@@ -88,7 +88,9 @@ export default function MultiSelectV1({ props }: any) {
       console.log(fieldValue?.split(","), 'fieldValue?.split(",")', filterIds);
 
       if (
-        fieldValue?.split(",").every((value:any) => hasExactMatch(filterIds, value))
+        fieldValue
+          ?.split(",")
+          .every((value: any) => hasExactMatch(filterIds, value))
       ) {
         setSelectAll(true);
       }
@@ -106,7 +108,7 @@ export default function MultiSelectV1({ props }: any) {
     );
   };
   const selectedOptions = options.filter((item: any) =>
-    fieldValue?.split(",").some((value:any) => value === item.value)
+    fieldValue?.split(",").some((value: any) => value === item.value)
   );
   const selectedValues = selectedOptions
     .map((item: any) => item.label)
@@ -118,7 +120,7 @@ export default function MultiSelectV1({ props }: any) {
   );
 
   return (
-    <Box>
+    <Box key={props.item.name}>
       <FormControl
         fullWidth
         sx={{
@@ -128,7 +130,8 @@ export default function MultiSelectV1({ props }: any) {
         }}
       >
         <InputLabel id="demo-multiple-checkbox-label">
-        {props.item.label}{props.item.required ? ' *' : ''}
+          {props.item.label}
+          {props.item.required ? " *" : ""}
         </InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -252,7 +255,7 @@ export default function MultiSelectV1({ props }: any) {
             />
           </MenuItem>
           {filterOptions.length !== 0 ? (
-            filterOptions.map((option:any) => (
+            filterOptions.map((option: any) => (
               <MenuItem
                 key={option.value}
                 value={`${option.value}`}
@@ -261,7 +264,7 @@ export default function MultiSelectV1({ props }: any) {
                 <Checkbox
                   checked={fieldValue
                     ?.split(",")
-                    .some((value:any) => value === option.value)}
+                    .some((value: any) => value === option.value)}
                   size="small"
                 />
                 <ListItemText

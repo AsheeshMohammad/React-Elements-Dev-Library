@@ -35,30 +35,28 @@ const FormRenderWrapper = ({
 
   return (
     <ThemeProvider theme={customTheme}>
-      <Box component={'form'} autoComplete="off">
-        <FormComponent container margin={"auto"}>
-          {formArray.map((item, i: number) => {
-            return (
-              <Formitem
-                key={i}
-                container
-                sx={item.CustomProps}
-                noOfColumn={item.numberOfColumns || numberOfColumns}
-              >
-                <RenderForm
-                  item={item}
-                  register={form.register}
-                  control={form.control}
-                  errors={form.formState.errors}
-                  getValues={form.getValues}
-                  clearErrors={form.clearErrors}
-                  setValue={form.setValue}
-                />
-              </Formitem>
-            );
-          })}
-        </FormComponent>
-      </Box>
+      <FormComponent container margin={"auto"}>
+        {formArray.map((item, i: number) => {
+          return (
+            <Formitem
+              key={i}
+              container
+              sx={item.CustomProps}
+              noOfColumn={item.numberOfColumns || numberOfColumns}
+            >
+              <RenderForm
+                item={item}
+                register={form.register}
+                control={form.control}
+                errors={form.formState.errors}
+                getValues={form.getValues}
+                clearErrors={form.clearErrors}
+                setValue={form.setValue}
+              />
+            </Formitem>
+          );
+        })}
+      </FormComponent>
     </ThemeProvider>
   );
 };

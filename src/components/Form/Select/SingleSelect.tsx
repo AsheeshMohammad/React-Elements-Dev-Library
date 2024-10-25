@@ -31,6 +31,7 @@ const SingleSelect = ({ props }: any) => {
     <Controller
       control={props.control}
       name={props.item.name}
+      key={props.item.name}
       render={({ field }) => (
         <>
           <Autocomplete

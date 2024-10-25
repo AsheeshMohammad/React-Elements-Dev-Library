@@ -16,7 +16,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
       validationShape[field.name] = validationShape[field.name].test(
         "custom-check",
         field.customErrorMessage, // Use the actual custom message
-        (value: any) =>  field.customErrorMessage &&  field.customErrorMessage>0 // No additional validation logic required
+        (value: any) =>  field.customErrorMessage &&  field.customErrorMessage // No additional validation logic required
       );
     }
   }

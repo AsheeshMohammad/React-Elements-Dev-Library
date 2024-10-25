@@ -41,8 +41,8 @@ export const renderLabel = (
 };
 export function formatDateMonthAndYear(date: any) {
   // Check if date is a string
-  if (typeof date !== 'string') {
-    throw new TypeError('Expected a string');
+  if (typeof date !== "string") {
+    throw new TypeError("Expected a string");
   }
 
   // Split the date string into month and year
@@ -55,13 +55,12 @@ export function formatDateMonthAndYear(date: any) {
   return `${formattedMonth}/01/${year}`;
 }
 
-
 interface OptionsProps {
   label: string | boolean | number;
   value: string | number;
 }
 interface TextFieldInputProps {
-  autoComplete:'new-password' | 'off'
+  autoComplete: "new-password" | "off";
 }
 
 export interface FormSectionPropsItem {
@@ -101,14 +100,20 @@ export interface FormSectionPropsItem {
   maxDate?: string;
   placeholder?: string;
   minRows?: string | number;
-  CustomProps?: string;
+  maxRows?: string | number;
+  CustomProps?: any;
   numberOfColumns?: number;
-  monthSpan?:number;
-  variant?:string;
-  allowSpecialChars?:boolean;
-  InputProps?:TextFieldInputProps;
-  customErrorMessage?:string | null;
-  sx?:SxProps<Theme>
+  monthSpan?: number;
+  variant?: string;
+  allowSpecialChars?: boolean;
+  InputProps?: TextFieldInputProps;
+  customErrorMessage?: string | null;
+  sx?: SxProps<Theme>;
+  donotAllowSpace?: boolean;
+  onInputProps?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  fileType?:'excel' | 'pdf' | 'all' | ''
+  handleFileError?:(message:string)=>void;
+  doNotAllowPaste?:boolean;
 }
 
 export interface FormRenderProps {
@@ -121,8 +126,8 @@ export interface FormRenderProps {
   setValue: any;
 }
 const RenderForm = (props: FormRenderProps) => {
-  console.log(props,'propsprops',props.item.inputType);
-  
+  console.log(props, "propsprops", props.item.inputType);
+
   switch (props.item?.inputType) {
     case "text":
     case "email":
@@ -131,13 +136,14 @@ const RenderForm = (props: FormRenderProps) => {
           <Controller
             control={props.control}
             name={props.item.name}
+            key={props.item.name}
             render={({ field }) => (
               <>
                 <TextField
                   {...field}
                   fullWidth
                   // error={props.errors}
-                  label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                  label={`${props.item.label}${props.item.required ? " *" : ""}`}
                   placeholder={props.item.placeholder || ""}
                   InputProps={{
                     style: {
@@ -145,6 +151,7 @@ const RenderForm = (props: FormRenderProps) => {
                       border: "none",
                     },
                   }}
+                  autoComplete="off"
                   sx={{
                     fontFamily: "Roboto-Reg",
                     "& .css-1holvmy,.css-lqj8pz-MuiFormLabel-root-MuiInputLabel-root, .css-kichxs-MuiFormLabel-root-MuiInputLabel-root":
@@ -169,18 +176,22 @@ const RenderForm = (props: FormRenderProps) => {
                         outline: "none",
                         border: "none", // Set border to none when input is focused
                       },
-                      ...props.item.sx
+                    ...props.item.sx,
                   }}
                   // classes={{ option: { color: "red !important" } }}
                   value={field.value || ""}
                   size="small"
                   disabled={props.item.disable}
-                  onBlur={(e:any)=>{
+                  onBlur={(e: any) => {
                     props?.item?.onBlurFn && props?.item?.onBlurFn(e);
                   }}
                   inputProps={{
                     maxLength: props.item.maxLength || 100,
                     onInput: (e: any) => {
+                      if (props?.item?.donotAllowSpace) {
+                        const value = e.target.value;
+                        e.target.value = value.replace(" ", "");
+                      }
                       if (!props?.item?.allowSpecialChars) {
                         const value = e.target.value;
                         e.target.value = value.replace(/[^a-zA-Z0-9 ]/g, "");
@@ -191,7 +202,13 @@ const RenderForm = (props: FormRenderProps) => {
                       ) {
                         e.target.value = "";
                       }
+                      props.item.onInputProps && props.item.onInputProps(e);
                     },
+                    onPaste:(e)=>{
+                      if(props.item.doNotAllowPaste){
+                        e.preventDefault();
+                      }
+                    }
                   }}
                 />
                 {props?.item?.helperText && (
@@ -217,6 +234,7 @@ const RenderForm = (props: FormRenderProps) => {
       return (
         <>
           <Controller
+            key={props.item.name}
             control={props.control}
             name={props.item.name}
             render={({ field }) => (
@@ -224,10 +242,10 @@ const RenderForm = (props: FormRenderProps) => {
                 <TextField
                   {...field}
                   fullWidth
-                  onBlur={(e:any)=>{
+                  onBlur={(e: any) => {
                     props?.item?.onBlurFn && props?.item?.onBlurFn(e);
                   }}
-                  label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                  label={`${props.item.label}${props.item.required ? " *" : ""}`}
                   InputProps={{
                     style: {
                       fontFamily: "Roboto-Reg",
@@ -241,6 +259,7 @@ const RenderForm = (props: FormRenderProps) => {
                         /[^a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~`|\\-]/g,
                         ""
                       );
+                    props.item.onInputProps && props.item.onInputProps(e);
                   }}
                   sx={{
                     fontFamily: "Roboto-Reg",
@@ -266,7 +285,7 @@ const RenderForm = (props: FormRenderProps) => {
                         outline: "none",
                         border: "none", // Set border to none when input is focused
                       },
-                      ...props.item.sx
+                    ...props.item.sx,
                   }}
                   // classes={{ option: { color: "red !important" } }}
                   value={field.value || ""}
@@ -293,7 +312,7 @@ const RenderForm = (props: FormRenderProps) => {
       );
     case "password":
       return (
-        <Box position={"relative"}>
+        <Box position={"relative"} key={props.item.name}>
           <PasswordField props={props} />
         </Box>
       );
@@ -323,25 +342,26 @@ const RenderForm = (props: FormRenderProps) => {
           <Controller
             control={props.control}
             name={props.item.name}
+            key={props.item.name}
             render={({ field }) => {
               return (
                 <>
                   <TextField
                     {...field}
                     size="small"
-                    label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                    label={`${props.item.label}${props.item.required ? " *" : ""}`}
                     value={props.getValues(props.item.name) || ""}
                     defaultValue={props.getValues(props.item.name) || null}
                     onInput={(e: any) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                      if(e.target.value===""){
-                        e.target.value=null;
+                      if (e.target.value === "") {
+                        e.target.value = null;
                       }
                       props?.item?.onChangeFn &&
                         props?.item?.onChangeFn(e.target.value);
                       props?.clearErrors && props?.clearErrors(props.item.name);
                     }}
-                    onBlur={(e:any)=>{
+                    onBlur={(e: any) => {
                       props?.item?.onBlurFn && props?.item?.onBlurFn(e);
                     }}
                     sx={{
@@ -353,6 +373,23 @@ const RenderForm = (props: FormRenderProps) => {
                     inputProps={{
                       pattern: "[0-9]*", // Only allow numbers
                       maxLength: props.item.maxLength || 20,
+                      onInput: (e: any) => {
+                        if (props?.item?.donotAllowSpace) {
+                          const value = e.target.value;
+                          e.target.value = value.replace(" ", "");
+                        }
+                        if (!props?.item?.allowSpecialChars) {
+                          const value = e.target.value;
+                          e.target.value = value.replace(/[^a-zA-Z0-9 ]/g, "");
+                        } // Allow only alphanumeric and space
+                        if (
+                          e.target.value.length === 1 &&
+                          e.target.value === " "
+                        ) {
+                          e.target.value = "";
+                        }
+                        props.item.onInputProps && props.item.onInputProps(e);
+                      },
                     }}
                     disabled={props.item.disable}
                     // onChange={(e)=>props.item?.onChangeFn && props?.item?.onChangeFn(e)}
@@ -375,13 +412,14 @@ const RenderForm = (props: FormRenderProps) => {
           <Controller
             name={props.item.name}
             control={props.control}
+            key={props.item.name}
             disabled={props.item?.disable}
             render={({ field }) => (
               <>
                 <TextField
                   type="text"
                   size="small"
-                  label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                  label={`${props.item.label}${props.item.required ? " *" : ""}`}
                   {...field}
                   onChange={(e) =>
                     props?.clearErrors && props?.clearErrors(props.item.name)
@@ -395,7 +433,7 @@ const RenderForm = (props: FormRenderProps) => {
                         top: "-5px",
                       },
                   }}
-                  onBlur={(e:any)=>{
+                  onBlur={(e: any) => {
                     props?.item?.onBlurFn && props?.item?.onBlurFn(e);
                   }}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -647,6 +685,7 @@ const RenderForm = (props: FormRenderProps) => {
           <Controller
             control={props.control}
             name={props.item.name}
+            key={props.item.name}
             render={({ field }) => (
               <>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -657,10 +696,10 @@ const RenderForm = (props: FormRenderProps) => {
                           top: "-10px",
                         },
                     }}
-                    label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                    label={`${props.item.label}${props.item.required ? " *" : ""}`}
                     views={["year"]}
                     value={field.value ? dayjs(field.value) : null}
-                    onChange={(date:any) => field.onChange(date)}
+                    onChange={(date: any) => field.onChange(date)}
                     // minDate={}
                     slots={{
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -712,6 +751,7 @@ const RenderForm = (props: FormRenderProps) => {
           <Controller
             control={props.control}
             name={props.item.name}
+            key={props.item.name}
             render={({ field }) => (
               <>
                 <TextField
@@ -731,6 +771,7 @@ const RenderForm = (props: FormRenderProps) => {
                       },
                     "& input": {
                       fontSize: "11px",
+                      // textTransform:'uppercase'
                     },
                     "& .css-2rul56-MuiFormLabel-root-MuiInputLabel-root": {
                       top: "-10px",
@@ -753,12 +794,19 @@ const RenderForm = (props: FormRenderProps) => {
                       padding: "5px 5px", // Set border to none when input is focused
                       fontSize: "11px",
                     },
+                    "& textarea": {
+                      fontSize: "11px",
+                      // textTransform:'uppercase'
+                      maxHeight: "500px !important",
+                      overflow: "auto",
+                    },
+                    ...props.item.sx,
                   }}
                   minRows={props.item.minRows || 1}
-                  // maxRows={2}
+                  maxRows={props.item.maxRows || 100}
                   placeholder={props.item.placeholder || "Type Something..."}
                   {...field}
-                  label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                  label={`${props.item.label}${props.item.required ? " *" : ""}`}
                   value={field.value || ""}
                   disabled={props.item.disable}
                   inputProps={{
@@ -823,7 +871,7 @@ const RenderForm = (props: FormRenderProps) => {
     case "toggleSwitch":
       return (
         <>
-          <FormActiveSwitch props={props} />
+          <FormActiveSwitch key={props.item.name} props={props} />
         </>
       );
     // case "percentage-number":
@@ -859,8 +907,8 @@ const RenderForm = (props: FormRenderProps) => {
     //       </ErrorMessageComponent>
     //     </>
     //   );
-    default :
-     return <></>
+    default:
+      return <></>;
   }
 };
 export default RenderForm;

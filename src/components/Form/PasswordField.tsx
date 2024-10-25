@@ -34,6 +34,17 @@ const PasswordField = ({ props }: any) => {
                       top: "-8px",
                     },
                 }}
+                inputProps={{
+                  maxLength: props.item.maxLength || 100,
+                  onInput: (e: any) => {
+                    props.item.onInputProps && props.item.onInputProps(e)
+                  },
+                  onPaste:(e)=>{
+                    if(props.item?.doNotAllowPaste){
+                      e.preventDefault();
+                    }
+                  }
+                }}
                 value={field.value || null}
                 disabled={props.item.disable}
               />

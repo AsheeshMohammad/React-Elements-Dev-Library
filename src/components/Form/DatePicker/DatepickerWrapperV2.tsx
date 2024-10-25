@@ -19,6 +19,7 @@ const DatepickerWrapperV2 = ({ props }: any) => {
     <Controller
       control={props.control}
       name={props.item.name}
+      key={props.item.name}
       render={({ field }) => (
         <>
           <LocalizationProvider dateAdapter={AdapterDayjs}>

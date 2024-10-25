@@ -14,19 +14,19 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 2000,
   },
 }));
-const SingleSelectNonAutoComplete = ({ props } : any) => {
+const SingleSelectNonAutoComplete = ({ props }: any) => {
   const classes = useStyles();
   return (
-    <FormControl fullWidth sx={{ position: "relative" }}>
+    <FormControl fullWidth sx={{ position: "relative" }} key={props.item.name}>
       <InputLabel id="demo-simple-select-label">{props.item.label}</InputLabel>
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         // {...props.register(props.item.name)}
         value={props.getValues(props.item.name)}
-        label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+        label={`${props.item.label}${props.item.required ? " *" : ""}`}
         onChange={(e) => props.setValue(props.item.name, e.target.value)}
-        onBlur={(e:any)=>{
+        onBlur={(e: any) => {
           props?.item?.onBlurFn && props?.item?.onBlurFn(e);
         }}
         // classes={{
@@ -34,7 +34,7 @@ const SingleSelectNonAutoComplete = ({ props } : any) => {
         //     props.item.size === "extrasmall" ? classes.option : classes.option2,
         // }}
       >
-        {props.item.options.map((item:any) => (
+        {props.item.options.map((item: any) => (
           <MenuItem
             sx={{
               fontSize: "11px", // Adjust the font size as needed

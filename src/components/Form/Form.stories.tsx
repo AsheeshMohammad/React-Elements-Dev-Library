@@ -37,96 +37,33 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     string | number | boolean | null | undefined
   >("");
   const formArray2: FormSectionPropsItem[] = [
+    // {
+    //   name: "file",
+    //   label: "",
+    //   inputType: "file",
+    //   required: true,
+    //   errorMessage: "Please give one file",
+    // },
     {
-      name: "userName",
-      label: "User Name",
-      inputType: "text",
-      required: true,
-      errorMessage: "Please enter",
-      customErrorMessage: password === "render" ? "Hii" : null,
-    },
-    {
-      name: "number",
-      label: "Number",
+      name: "text",
+      label: "Text",
       inputType: "select",
-      options:[],
+      doNotAllowPaste:true,
       required: true,
-      errorMessage: "Please enter Number",
-      InputProps: {
-        autoComplete: "new-password",
-      },
-      customErrorMessage: Number(password)>120 ? "Number is exceeding" : null,
+      options:[ {label:'J',value:'2'}],
+      errorMessage: "Please give one file",
+      customErrorMessage: "ie is ksjs",
+      // maxRows:5
     },
     {
-      name: "date",
+      name: "password", 
       label: "Password",
-      inputType: "datepicker",
-      required: true,
-      errorMessage: "Please select message",
-      minDate: "30/06/2024",
-      maxDate: "22/07/2024",
-    },
-    {
-      name: "password1",
-      label: "Password New",
       inputType: "password",
-      required: true,
-      errorMessage: "Please select message",
-    },
-    {
-      name: "daterange",
-      label: "Password",
-      required: true,
-      inputType: "multiselect",
-      options: [],
-    },
-    {
-      name: "daterangepicker",
-      label: "Date range Picker",
-      required: true,
-      inputType: "dateRangePicker",
-      monthSpan: 1,
-    },
-    {
-      name: "status",
-      label: "",
-      inputType: "toggleSwitch",
-      monthSpan: 1,
-    },
-    {
-      name: "yearpicker",
-      label: "Year",
-      required: true,
-      inputType: "yearpicker",
-      monthSpan: 1,
-    },
-    {
-      name: "monthpicker",
-      label: "Month Picker",
-      required: true,
-      inputType: "monthpicker",
-      monthSpan: 1,
-    },
-    {
-      name: "file",
-      label: "File Upload",
-      required: true,
-      inputType: "file",
-      monthSpan: 1,
-    },
-    {
-      name: "filse",
-      label: "PASSSWORD",
-      required: true,
-      inputType: "password",
-      monthSpan: 1,
-      errorMessage: "Please enter pass",
-    },
-    {
-      name: "filse",
-      label: "PASSSWORD",
-      inputType: "phoneNumber",
-      monthSpan: 1,
+      doNotAllowPaste:true
+      // required: true,
+      // errorMessage: "Please give one file",
+      // customErrorMessage: "ie is ksjs",
+      // maxRows:5
     },
   ];
   const { initialValues, validationSchema } = useFormValidatingContext(
@@ -139,14 +76,15 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
   });
   const data = form.watch("filse");
   console.log(data, "password");
-  const pass=form.watch('number');
+  const pass = form.watch("number");
   useEffect(() => {
-    setPassword(pass)
+    setPassword(pass);
   }, [form.getValues()]);
-  console.log(form.formState.errors,'kjshgshj');
-  
+  console.log(form.formState.errors, "kjshgshj");
+
   const submitForm: any = (values: any) => {
     console.log(values, "smsms");
+    form.reset(initialValues);
   };
   return (
     <>
@@ -175,10 +113,11 @@ RenderFormComponent.args = {
     {
       name: "userName",
       label: "User Name",
-      inputType: "text",
+      inputType: "textarea",
       required: true,
       errorMessage: "Please enter",
       customErrorMessage: "Hii",
+      minRows: 5,
     },
     {
       name: "password",
@@ -213,9 +152,9 @@ RenderFormComponent.args = {
       inputType: "multiselect",
       options: [
         {
-          label:'Hii',
-          value:'lkjh'
-        }
+          label: "Hii",
+          value: "lkjh",
+        },
       ],
     },
     {
