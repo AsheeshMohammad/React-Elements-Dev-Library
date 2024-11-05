@@ -4,7 +4,7 @@ import { ErrorMessageComponent } from "../Form.styles";
 import { useEffect } from "react";
 import { FormRenderProps, renderLabel } from "../FormRender";
 
-const FormRenderFileUpload = ({ props }: {props : FormRenderProps}) => {
+const FormRenderFileUpload = ({ props }: { props: FormRenderProps }) => {
   const getDocument: Document = document;
   useEffect(() => {
     if (
@@ -43,7 +43,11 @@ const FormRenderFileUpload = ({ props }: {props : FormRenderProps}) => {
           onChange={(event) => {
             const file = event.target.files[0];
             const fileName = file ? file.name : null;
-            const allowedExtensions:{excel:string[],pdf:string[],all:string[]} = {
+            const allowedExtensions: {
+              excel: string[];
+              pdf: string[];
+              all: string[];
+            } = {
               excel: ["xls", "xlsx"],
               pdf: ["pdf"],
               all: ["pdf", "jpg", "jpeg", "png", "xls", "xlsx", "doc", "docx"],
@@ -57,18 +61,30 @@ const FormRenderFileUpload = ({ props }: {props : FormRenderProps}) => {
                 : props.item.fileType === "pdf"
                   ? allowedExtensions.pdf
                   : allowedExtensions.all;
+
             if (
               props.item?.fileType &&
               fileExtension &&
               !validExtensions.includes(fileExtension)
             ) {
-              props.item?.handleFileError && props.item?.handleFileError(
-                `Please upload ${allowedExtensions[props.item.fileType].join(",")} Files only`
-              );
+              props.item?.handleFileError &&
+                props.item?.handleFileError(
+                  `Please upload ${allowedExtensions[props.item.fileType].join(",")} Files only`
+                );
+              event.target.value = ""; // Clear the file input\
+              props.setValue(props.item?.name, null);
+              props.setValue(props.item?.name + "Name", "");
+              return;
+            } else if (event.target.files[0].size > 20000000) {
+              props.item?.handleFileError &&
+                props.item?.handleFileError(
+                  `File size should be less than 20MB`
+                );
               event.target.value = ""; // Clear the file input
+              props.setValue(props.item?.name, null);
+              props.setValue(props.item?.name + "Name", "");
               return;
             }
-
             // Proceed if valid
             props.setValue(props.item?.name, file);
             props.setValue(props.item?.name + "Name", fileName);
