@@ -22,6 +22,7 @@ import SingleSelectNonAutoComplete from "./Select/SingleSelectNonAutoComplete";
 import FormActiveSwitch from "./FormActiveSwitch";
 import { Theme } from "@emotion/react";
 import { SxProps } from "@mui/material";
+import RichTextEditor from "../RichTextEditor/RichTextEditor";
 export const renderLabel = (
   label: string,
   isRequired?: boolean,
@@ -87,6 +88,8 @@ export interface FormSectionPropsItem {
     | "pincode"
     | "email"
     | "toggleSwitch"
+    | "rich-text-editor"
+    | "multiEmail"
     | "";
   options?: OptionsProps[];
   required?: boolean;
@@ -111,9 +114,10 @@ export interface FormSectionPropsItem {
   sx?: SxProps<Theme>;
   donotAllowSpace?: boolean;
   onInputProps?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  fileType?:'excel' | 'pdf' | 'all' | ''
-  handleFileError?:(message:string)=>void;
-  doNotAllowPaste?:boolean;
+  fileType?: "excel" | "pdf" | "all" | "";
+  handleFileError?: (message: string) => void;
+  doNotAllowPaste?: boolean;
+  removeButtons?: string;
 }
 
 export interface FormRenderProps {
@@ -130,6 +134,7 @@ const RenderForm = (props: FormRenderProps) => {
 
   switch (props.item?.inputType) {
     case "text":
+    case "multiEmail":
     case "email":
       return (
         <>
@@ -204,11 +209,11 @@ const RenderForm = (props: FormRenderProps) => {
                       }
                       props.item.onInputProps && props.item.onInputProps(e);
                     },
-                    onPaste:(e)=>{
-                      if(props.item.doNotAllowPaste){
+                    onPaste: (e) => {
+                      if (props.item.doNotAllowPaste) {
                         e.preventDefault();
                       }
-                    }
+                    },
                   }}
                 />
                 {props?.item?.helperText && (
@@ -230,6 +235,24 @@ const RenderForm = (props: FormRenderProps) => {
           />
         </>
       );
+    case "rich-text-editor":
+      return (
+        <>
+          <Controller
+            control={props.control}
+            name={props.item.name}
+            key={props.item.name}
+            render={({ field }) => (
+              <>
+                <RichTextEditor props={props} />
+                <ErrorMessageComponent>
+                  <ErrorMessage errors={props.errors} name={props.item.name} />
+                </ErrorMessageComponent>
+              </>
+            )}
+          />
+        </>
+    );
     case "register-number":
       return (
         <>

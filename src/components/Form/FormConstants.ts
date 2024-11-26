@@ -33,6 +33,17 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
 
         renderCustomError(field)
         break;
+      case "rich-text-editor":
+        initialValues[field.name] = "";
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.string()
+            .typeError(field.errorMessage)
+            .required(field.errorMessage);
+          renderCustomError(field)
+        }
+
+        renderCustomError(field)
+        break;
       case "password":
         initialValues[field.name] = "";
         if (field.required && field.errorMessage) {
@@ -64,7 +75,39 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         }
         renderCustomError(field)
         break;
-      case "file":
+      case "multiEmail":
+        initialValues[field.name] = "";
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.string()
+            .typeError(`Please enter ${field.label}`)
+            .required(field.errorMessage)
+            .test("valid-email", `Please enter valid Email`, (value) => {
+              if (!value) return false;
+
+              const emails = value.split(';');
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          
+              return emails.every(email => emailRegex.test(email.trim()));
+            })
+            renderCustomError(field)
+        } else {
+          validationShape[field.name] = Yup.string()
+            .typeError(`Please enter ${field.label}`)
+            .test("valid-email", `Please enter valid Email`, (value: any) => {
+              // Custom validation to check for at least one period after '@'
+              if (!value) return false;
+
+              const emails = value.split(';');
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          
+              return emails.every(email => emailRegex.test(email.trim()));
+            })
+            renderCustomError(field)
+        }
+        renderCustomError(field)
+        break;
+
+        case "file":
         initialValues[field.name] = null;
         if (field.required && field.errorMessage) {
           validationShape[field.name] = Yup.mixed()
@@ -289,7 +332,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         break;
     }
   });
-  const validationSchema = Yup.object().shape(validationShape);
+  const validationSchema:any = Yup.object().shape(validationShape);
   return { validationSchema, initialValues };
 };
 

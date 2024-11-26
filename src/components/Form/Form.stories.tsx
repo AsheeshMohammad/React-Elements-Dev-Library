@@ -16,6 +16,7 @@ import {
 import FormRenderWrapper, { FormRenderWrapperProps } from "./FormRenderWrapper";
 import useFormValidatingContext from "./FormConstants";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 
 export default {
   title: "Components/Form",
@@ -56,6 +57,15 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
       // maxRows:5
     },
     {
+      name: "multiEmail",
+      label: "multiEmail",
+      inputType: "multiEmail",
+      required:true,
+      errorMessage: "Please put atleast one mail",
+      allowSpecialChars:true
+      // maxRows:5
+    },
+    {
       name: "password", 
       label: "Password",
       inputType: "password",
@@ -64,6 +74,30 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
       // errorMessage: "Please give one file",
       // customErrorMessage: "ie is ksjs",
       // maxRows:5
+    },
+    {
+      name: "search", 
+      label: "Search Api",
+      inputType: "select-search-api",
+      doNotAllowPaste:true,
+      AxiosInstance:axios,
+      ApiInstance:'https://devmyinfo.go.akamai-access.com/TCA_API_QA/api/HSNDropdownList?type=product',
+      searchInstance:'searchValue',
+      // required: true,
+      // errorMessage: "Please give one file",
+      // customErrorMessage: "ie is ksjs",
+      // maxRows:5
+    },
+    {
+      name: "Editor", 
+      label: "Editor",
+      inputType: "rich-text-editor",
+      numberOfColumns:1,
+      required:true,
+      errorMessage: "Please enter",
+      sx:{
+        height:'2000px'
+      }
     },
   ];
   const { initialValues, validationSchema } = useFormValidatingContext(
