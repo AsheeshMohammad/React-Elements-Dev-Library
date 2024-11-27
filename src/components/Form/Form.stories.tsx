@@ -60,8 +60,6 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
       name: "multiEmail",
       label: "multiEmail",
       inputType: "multiEmail",
-      required:true,
-      errorMessage: "Please put atleast one mail",
       allowSpecialChars:true
       // maxRows:5
     },
@@ -70,19 +68,6 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
       label: "Password",
       inputType: "password",
       doNotAllowPaste:true
-      // required: true,
-      // errorMessage: "Please give one file",
-      // customErrorMessage: "ie is ksjs",
-      // maxRows:5
-    },
-    {
-      name: "search", 
-      label: "Search Api",
-      inputType: "select-search-api",
-      doNotAllowPaste:true,
-      AxiosInstance:axios,
-      ApiInstance:'https://devmyinfo.go.akamai-access.com/TCA_API_QA/api/HSNDropdownList?type=product',
-      searchInstance:'searchValue',
       // required: true,
       // errorMessage: "Please give one file",
       // customErrorMessage: "ie is ksjs",
@@ -108,7 +93,7 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     defaultValues: initialValues,
     resolver: yupResolver(validationSchema),
   });
-  const data = form.watch("filse");
+  const data = form.watch("Editor");
   console.log(data, "password");
   const pass = form.watch("number");
   useEffect(() => {
