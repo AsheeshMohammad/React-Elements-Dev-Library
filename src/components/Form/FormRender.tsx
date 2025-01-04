@@ -118,6 +118,8 @@ export interface FormSectionPropsItem {
   handleFileError?: (message: string) => void;
   doNotAllowPaste?: boolean;
   removeButtons?: string;
+  Fonts?: number[];
+  FontFamily?:any
 }
 
 export interface FormRenderProps {

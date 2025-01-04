@@ -1,62 +1,102 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import JoditEditor, { Jodit } from "jodit-react";
 import { FormRenderProps } from "../Form/FormRender";
-import { Box } from "@mui/material";
 
 const RichTextEditor = ({ props }: { props: FormRenderProps }) => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
-  const config =
-    // useMemo(
-    {
-      readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-      placeholder: "Start typing...",
-      removeButtons: props.item.removeButtons,
-      style: {
-        'font-family': 'Arial', // Default font is Arial
-      },
-      controls: {
-        font: {
-          list: {
-            Arial: 'Arial', // Allow Arial
-            'Rotis Semi Sans': 'Rotis Semi Sans', // Allow Rotis Semi Sans
-          },
+  const value = props.getValues(props.item.name);
+
+  const config = {
+    readonly: false,
+    placeholder: "Start typing...",
+    removeButtons: props.item.removeButtons,
+    style: {
+      "font-family": "Arial",
+    },
+    controls: {
+      font: {
+        list: {
+          Arial: "Arial",
+          // "Rotis Semi Sans": "Rotis Semi Sans",
+          ...props.item?.FontFamily
         },
-        fontsize: {
-          list: Jodit.atom([8,9,10,11])
+      },
+      fontsize: {
+        list: Jodit.atom(props.item.Fonts || [8, 9, 10, 11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
+      },
+    },
+    defaultFont: "Arial",
+    defaultFontSize: "11px",
+    askBeforePasteFromWord: false,
+    askBeforePasteHTML: false,
+    hotkeys: {
+      redo: "ctrl+z",
+      undo: "ctrl+y,ctrl+shift+z",
+      indent: "ctrl+]",
+      outdent: "ctrl+[",
+      bold: "ctrl+b",
+      italic: "ctrl+i",
+      removeFormat: "ctrl+shift+m",
+      insertOrderedList: "ctrl+shift+7",
+      insertUnorderedList: "ctrl+shift+8",
+      openSearchDialog: "ctrl+f",
+      openReplaceDialog: "ctrl+r",
+    },
+    events: {
+      processPaste: (event, html) => {
+        if (editor.current && editor.current.editor) {
+          const joditEditor = editor.current.editor;
+          joditEditor.selection.insertHTML(html);
+          joditEditor.tempContent = joditEditor.getHTML(); // Correct method
         }
       },
-      defaultFont: 'Arial', // Set Arial as the default font
-      defaultFontSize: '11px', // Set Arial as the default font
-	  ...props.item.sx
-    };
-  // [placeholder]
-  // );
+      afterPaste: (event) => {
+        if (editor.current && editor.current.editor) {
+          const joditEditor = editor.current.editor;
+          const el = document.createElement("div");
+          el.innerHTML = joditEditor.tempContent
+            ? joditEditor.tempContent
+            : joditEditor.getHTML(); // Correct method
+          joditEditor.setHTML(el.innerHTML); // Correct method
+          joditEditor.tempContent = null;
+        }
+      },
+    },
+    ...props.item.sx,
+  };
+  
+
+  // Update content when props value changes
+  useEffect(() => {
+    setContent(value);
+  }, [value]);
 
   const handleBlur = (newContent: string) => {
-    if(newContent==="<p><br></p>"){
+    if (newContent === "<p><br></p>") {
       setContent(newContent);
-      props.setValue(props.item.name, '');
-    }else{
+      props.setValue(props.item.name, "");
+    } else {
       setContent(newContent);
       props.setValue(props.item.name, newContent);
     }
-    props.item.onBlurFn && props.item.onBlurFn(newContent)
+    props.item.onBlurFn && props.item.onBlurFn(newContent);
   };
 
   const handleChange = (newContent: string) => {
-    console.log(newContent,'newContent Editor');
-    
+    console.log(newContent, "newContent Editor");
   };
+
   return (
-      <JoditEditor
-        ref={editor}
-        value={content}
-        config={config}
-        tabIndex={1} // tabIndex of textarea
-        onBlur={handleBlur} // preferred to use only this option to update the content for performance reasons
-        onChange={handleChange}
-      />
-  );  
+    <JoditEditor
+      ref={editor}
+      value={content}
+      config={config}
+      tabIndex={1} // TabIndex for textarea
+      onBlur={handleBlur}
+      onChange={handleChange}
+    />
+  );
 };
+
 export default RichTextEditor;

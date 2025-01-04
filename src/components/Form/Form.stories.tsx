@@ -118,6 +118,9 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
       <button onClick={() => form?.setValue("status", true)}>
         Active set status
       </button>
+      <button onClick={() => form?.reset(initialValues)}>
+        Reset
+      </button>
     </>
   );
 };
