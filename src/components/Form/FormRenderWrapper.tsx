@@ -20,12 +20,14 @@ export interface FormRenderWrapperProps {
   name: string;
   numberOfColumns?: number;
   form: UseFormReturn<FieldValues, any, undefined>;
+  variant?: "standard" | "outlined" | "";
 }
 const FormRenderWrapper = ({
   formArray,
   name,
   numberOfColumns = 3,
   form,
+  variant=''
 }: FormRenderWrapperProps) => {
   // const formContext=useFormControl({
   // })
@@ -52,6 +54,7 @@ const FormRenderWrapper = ({
                 getValues={form.getValues}
                 clearErrors={form.clearErrors}
                 setValue={form.setValue}
+                variant={variant}
               />
             </Formitem>
           );

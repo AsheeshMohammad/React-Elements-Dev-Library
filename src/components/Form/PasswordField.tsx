@@ -4,8 +4,9 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Box, FormControl, IconButton, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { renderLabel } from "./FormRender";
 
-const PasswordField = ({ props }: any) => {
+const PasswordField = ({ props,variant }: any) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -20,13 +21,14 @@ const PasswordField = ({ props }: any) => {
           <>
             <Box sx={{ position: "relative" }}>
               {" "}
+                {renderLabel(variant,props)}
               <TextField
                 size="small"
                 type={showPassword ? "text" : "password"}
                 autoComplete={props.item?.InputProps?.autoComplete || 'off'}
                 placeholder={props.item.placeholder || ""}
                 {...field}
-                label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                label={  variant !== "standard" ?`${props.item.label}${props.item.required ? ' *' : ''}`:''}
                 sx={{
                   width: "100%",
                   "& .css-kichxs-MuiFormLabel-root-MuiInputLabel-root,.css-1holvmy":

@@ -3,6 +3,7 @@ import { DateRangePicker, DateRange } from "mui-daterange-picker";
 import { Box, Modal, TextField } from "@mui/material";
 import "./DateRangePicker.scss";
 import dayjs from "dayjs";
+import { renderLabel } from "../FormRender";
 const convertDateFormat = (dateStr:string) => {
   const dateParts = dateStr?.split('/');
   const day = dateParts[0];
@@ -12,7 +13,7 @@ const convertDateFormat = (dateStr:string) => {
 };
 
 
-const DateRangePickerComponent = ({ props }: any) => {
+const DateRangePickerComponent = ({ props,variant }: any) => {
   const [open, setOpen] = React.useState(false);
   const [dateRange, setDateRange] = React.useState<any>({
     "startDate":convertDateFormat(props.getValues('FromDate')),
@@ -87,8 +88,9 @@ console.log(convertDateFormat(props.getValues('ToDate')),'Datataa');
         },
       }}
     >
+       {renderLabel(variant,props)}
       <TextField
-        label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+        label={variant !== "standard" ? `${props.item.label}${props.item.required ? ' *' : ''}` :''}
         value={value || null}
         className="read-only"
         inputRef={textRef}

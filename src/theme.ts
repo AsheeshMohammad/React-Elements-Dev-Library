@@ -18,7 +18,7 @@ export const customTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Roboto-Reg'
+    
   },
   palette: {
     // primary: {
@@ -64,7 +64,6 @@ export const customTheme = createTheme({
     MuiButton:{
       styleOverrides: {
         root: {
-          fontFamily:'Roboto-Reg',
           textTransform:'none'
         }
       }

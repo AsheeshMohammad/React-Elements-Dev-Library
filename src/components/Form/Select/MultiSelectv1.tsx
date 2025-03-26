@@ -11,6 +11,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { ErrorMessageComponent } from "../Form.styles";
 import { useState } from "react";
 import { makeStyles } from "@mui/styles";
+import { renderLabel } from "../FormRender";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 3;
@@ -27,11 +28,11 @@ const MenuProps = {
 const useStyles = makeStyles((theme) => ({
   option: {
     fontSize: "10px", // Adjust the font size as needed
-    fontFamily: "Roboto-Reg",
+    
   },
   option2: {
     fontSize: "11px",
-    fontFamily: "Roboto-Reg",
+    
   },
 }));
 const extractValuesToArray = (inputString: string) => {
@@ -40,7 +41,7 @@ const extractValuesToArray = (inputString: string) => {
   return trimmedArray;
 };
 
-export default function MultiSelectV1({ props }: any) {
+export default function MultiSelectV1({ props,variant }: any) {
   console.log(props, "ksjh");
 
   const [personName, setPersonName] = React.useState<string[]>(
@@ -129,10 +130,11 @@ export default function MultiSelectV1({ props }: any) {
           },
         }}
       >
-        <InputLabel id="demo-multiple-checkbox-label">
+         {renderLabel(variant,props)}
+        { variant !== "standard" ? <InputLabel id="demo-multiple-checkbox-label">
           {props.item.label}
           {props.item.required ? " *" : ""}
-        </InputLabel>
+        </InputLabel>:''}
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -160,7 +162,7 @@ export default function MultiSelectV1({ props }: any) {
             setSearchText("");
             props?.item?.onCloseMenu && props?.item?.onCloseMenu();
           }}
-          input={<OutlinedInput label={props.item.label} />}
+          input={<OutlinedInput label={ variant !== "standard"  ? props.item.label : ''} />}
           renderValue={(selected) => (
             <Tooltip title={selectedValues}>
               {selectedOptions.length > 3

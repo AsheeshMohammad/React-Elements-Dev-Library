@@ -5,8 +5,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ErrorMessage } from "@hookform/error-message";
 import { ErrorMessageComponent } from "../Form.styles";
 import dayjs from "dayjs";
+import { renderLabel } from "../FormRender";
 
-const DatepickerWrapperV2 = ({ props }: any) => {
+const DatepickerWrapperV2 = ({ props,variant }: any) => {
   const inputTextRef = useRef<HTMLInputElement>();
   const [open, setOpen] = useState(false);
   const handleToggle = () => {
@@ -23,12 +24,13 @@ const DatepickerWrapperV2 = ({ props }: any) => {
       render={({ field }) => (
         <>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {renderLabel(variant,props)}
             <DatePicker
-              label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+              label={ variant !== "standard" ?`${props.item.label}${props.item.required ? ' *' : ''}`: ''}
               value={
                 typeof field.value === "string"
                   ? dayjs(field.value, "DD/MM/YYYY")
-                  : (field.value === null || field.value === undefined) && null
+                  : (field.value === null || field.value === undefined) && null 
               }
               open={open}
               className="read-only"
@@ -68,7 +70,7 @@ const DatepickerWrapperV2 = ({ props }: any) => {
           {props?.item?.helperText && (
             <span
               style={{
-                fontFamily: "Roboto-Reg",
+                
                 fontSize: "11px",
                 color: "#3651d3",
               }}

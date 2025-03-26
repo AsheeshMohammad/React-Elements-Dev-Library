@@ -38,51 +38,31 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     string | number | boolean | null | undefined
   >("");
   const formArray2: FormSectionPropsItem[] = [
-    // {
-    //   name: "file",
-    //   label: "",
-    //   inputType: "file",
-    //   required: true,
-    //   errorMessage: "Please give one file",
-    // },
     {
-      name: "text",
-      label: "Text",
-      inputType: "select",
-      doNotAllowPaste:true,
-      required: true,
-      options:[ {label:'J',value:'2'}],
-      errorMessage: "Please give one file",
-      customErrorMessage: "ie is ksjs",
-      // maxRows:5
-    },
-    {
-      name: "multiEmail",
-      label: "multiEmail",
-      inputType: "multiEmail",
-      allowSpecialChars:true
-      // maxRows:5
-    },
-    {
-      name: "password", 
-      label: "Password",
-      inputType: "password",
-      doNotAllowPaste:true
-      // required: true,
-      // errorMessage: "Please give one file",
-      // customErrorMessage: "ie is ksjs",
-      // maxRows:5
+      name: "Editor", 
+      label: "Editor",
+      inputType: "toggleSwitch",
+      label1:'Yes'
     },
     {
       name: "Editor", 
       label: "Editor",
+      inputType: "dateRangePicker",
+      label1:'Yes'
+    },
+    {
+      name: "EditorRich", 
+      label: "Editor",
       inputType: "rich-text-editor",
-      numberOfColumns:1,
+      label1:'Yes'
+    },
+    {
+      name: "TimePicker", 
+      label: "Editor",
+      inputType: "timepicker",
+      label1:'Yes',
       required:true,
-      errorMessage: "Please enter",
-      sx:{
-        height:'2000px'
-      }
+      errorMessage:'Please enter'
     },
   ];
   const { initialValues, validationSchema } = useFormValidatingContext(
@@ -107,7 +87,7 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
   };
   return (
     <>
-      <FormRenderWrapper formArray={formArray2} name={"myName"} form={form} />
+      <FormRenderWrapper formArray={formArray2} name={"myName"} form={form} variant="standard"/>
       <button onClick={() => form?.handleSubmit(submitForm)()}>Submit</button>
       <button onClick={() => form?.setValue("password", "Asheesh")}>
         Change

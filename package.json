@@ -1,6 +1,6 @@
 {
   "name": "tp-react-elements-dev",
-  "version": "1.7.5",
+  "version": "1.8.3",
   "main": "dist/index.js",
   "private": false,
   "types": "dist/index.d.ts",
@@ -69,6 +69,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@chromatic-com/storybook": "^1.5.0",
     "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-json": "^6.1.0",
@@ -87,6 +88,8 @@
     "ajv-keywords": "^3.5.2",
     "css-loader": "^7.1.2",
     "eslint-plugin-storybook": "^0.8.0",
+    "install": "^0.13.0",
+    "npm": "^11.0.0",
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
     "resolve-url-loader": "^5.0.0",

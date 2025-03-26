@@ -252,6 +252,7 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         renderCustomError(field);
         break;
       case "datepicker":
+      case "timepicker":
         initialValues[field.name] = null;
         if (field.required && field.errorMessage) {
           validationShape[field.name] = validationShape[field.name] =

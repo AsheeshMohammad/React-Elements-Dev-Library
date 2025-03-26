@@ -7,10 +7,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import { ErrorMessageComponent } from "../Form.styles";
-import { formatDateMonthAndYear } from "../FormRender";
+import { formatDateMonthAndYear, renderLabel } from "../FormRender";
 import { ClickAwayListener } from "@mui/base";
 
-const Monthpickerrender = ({ props }:any) => {
+const Monthpickerrender = ({ props,variant }:any) => {
   const ref = useRef<HTMLDivElement>(null);
   const [calenderOpen, setCalenderOpen] = useState(false);
   return (
@@ -20,10 +20,11 @@ const Monthpickerrender = ({ props }:any) => {
       render={({ field }) => (
         <>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {renderLabel(variant,props)}
             <ClickAwayListener onClickAway={() => setCalenderOpen(false)}>
               <DatePicker
                 ref={ref}
-                label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                label={  variant !== "standard" && `${props.item.label}${props.item.required ? ' *' : ''}`}
                 views={["month","year"]}
                 disabled={props.item.disable}
                 value={
@@ -87,7 +88,7 @@ const Monthpickerrender = ({ props }:any) => {
           {props?.item?.helperText && (
             <span
               style={{
-                fontFamily: "Roboto-Reg",
+                
                 fontSize: "11px",
                 color: "#3651d3",
               }}

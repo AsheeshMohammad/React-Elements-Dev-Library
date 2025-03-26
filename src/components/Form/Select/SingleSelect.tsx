@@ -4,21 +4,22 @@ import { makeStyles } from "@mui/styles";
 import React from "react";
 import { Controller } from "react-hook-form";
 import { ErrorMessageComponent } from "../Form.styles";
+import { renderLabel } from "../FormRender";
 
 const useStyles = makeStyles((theme) => ({
   option: {
     fontSize: "11px",
-    fontFamily: "Roboto-Reg",
+
     zIndex: 2000,
   },
   option2: {
     fontSize: "11px",
-    fontFamily: "Roboto-Reg",
+
     zIndex: 2000,
   },
 }));
 
-const SingleSelect = ({ props }: any) => {
+const SingleSelect = ({ props,variant }: any) => {
   const classes = useStyles();
   // const valueRender = props.item.options?.find(
   //   (item) => item.value === props.getValues(props.item.name)
@@ -34,6 +35,7 @@ const SingleSelect = ({ props }: any) => {
       key={props.item.name}
       render={({ field }) => (
         <>
+          {renderLabel(variant, props)}
           <Autocomplete
             {...field}
             value={
@@ -50,7 +52,7 @@ const SingleSelect = ({ props }: any) => {
                 props?.item?.onChangeFn(newValue?.value);
               props?.clearErrors && props?.clearErrors(props?.item?.name);
             }}
-            onBlur={(e:any)=>{
+            onBlur={(e: any) => {
               props?.item?.onBlurFn && props?.item?.onBlurFn(e);
             }}
             size="small"
@@ -62,7 +64,7 @@ const SingleSelect = ({ props }: any) => {
                 {
                   top: "-3px",
                 },
-                ...props.item.sx
+              ...props.item.sx,
             }}
             ListboxProps={{
               onScroll: (event: React.SyntheticEvent) => {
@@ -99,8 +101,8 @@ const SingleSelect = ({ props }: any) => {
                 >
                   <TextField
                     {...params}
-                    placeholder={props.item.Placeholder}
-                    label={`${props.item.label}${props.item.required ? ' *' : ''}`}
+                    placeholder={props.item.placeholder}
+                    label={  variant !== "standard" ? `${props.item.label}${props.item.required ? " *" : ""}`:''}
                   />
                 </Tooltip>
               );

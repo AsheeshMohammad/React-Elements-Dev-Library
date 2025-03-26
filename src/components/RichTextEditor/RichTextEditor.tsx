@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import JoditEditor, { Jodit } from "jodit-react";
+import JoditEditor, { IJoditEditorProps, Jodit } from "jodit-react";
 import { FormRenderProps } from "../Form/FormRender";
 
 const RichTextEditor = ({ props }: { props: FormRenderProps }) => {
@@ -10,6 +10,7 @@ const RichTextEditor = ({ props }: { props: FormRenderProps }) => {
   const config = {
     readonly: false,
     placeholder: "Start typing...",
+    statusbar:false,
     removeButtons: props.item.removeButtons,
     style: {
       "font-family": "Arial",

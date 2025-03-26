@@ -45,7 +45,7 @@ export const SaveAsDraftButton = styled(Button)(({ theme }) => ({
   ":hover": { background: "orange" },
 }));
 export const PageHeader = styled(Typography)(({ theme }) => ({
-  fontFamily: "Roboto-Med",
+  // fontFamily: "Roboto-Med",
 }));
 export const ReportsItem = styled(Grid, {
   shouldForwardProp: (prop) => prop !== "isActive" && prop !== "noOfColumn",
@@ -60,7 +60,7 @@ export const ReportsItem = styled(Grid, {
   border: "1px solid #0003",
   fontSize: "12px",
   padding: "6px",
-  fontFamily: "Roboto",
+  // fontFamily: "Roboto",
   textAlign: "center",
   [theme.breakpoints.down("md")]: {
     width: "100%",
@@ -87,6 +87,6 @@ export const DialogTitleWrapper = styled(DialogTitle)(({ theme }) => ({
   justifyContent: "space-between",
   fontSize: "14px",
   cursor: "move",
-  fontFamily: "Roboto",
+  // fontFamily: "Roboto",
   borderBottom: "1px solid rgb(229 231 235 / 1)",
 }));

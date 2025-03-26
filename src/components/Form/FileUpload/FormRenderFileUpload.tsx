@@ -4,7 +4,7 @@ import { ErrorMessageComponent } from "../Form.styles";
 import { useEffect } from "react";
 import { FormRenderProps, renderLabel } from "../FormRender";
 
-const FormRenderFileUpload = ({ props }: { props: FormRenderProps }) => {
+const FormRenderFileUpload = ({ props,variant }: { props: FormRenderProps,variant:'standard' | 'outlined' | '' }) => {
   const getDocument: Document = document;
   useEffect(() => {
     if (
@@ -21,10 +21,10 @@ const FormRenderFileUpload = ({ props }: { props: FormRenderProps }) => {
 
   return (
     <>
-      <Box paddingLeft={"4px"}>
+      <Box paddingLeft={"4px"} sx={{...props.item.sx}}>
         {props.item?.label && (
           <Box sx={{ fontSize: "10px;" }}>
-            {renderLabel(props.item?.label, props.item?.required)}
+             {renderLabel(variant,props)}
           </Box>
         )}
         <TextField

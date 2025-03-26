@@ -23,23 +23,25 @@ import FormActiveSwitch from "./FormActiveSwitch";
 import { Theme } from "@emotion/react";
 import { SxProps } from "@mui/material";
 import RichTextEditor from "../RichTextEditor/RichTextEditor";
-export const renderLabel = (
-  label: string,
-  isRequired?: boolean,
-  alignRight?: boolean
-) => {
-  return (
-    <LabelComponent
-      container
-      style={{ justifyContent: alignRight ? "flex-end" : "normal" }}
-    >
-      <Box fontSize={"12px"} fontFamily={"Roboto-Reg"}>
-        {label}
-        {isRequired ? <ImportantMark> *</ImportantMark> : ""}
-      </Box>
-    </LabelComponent>
-  );
-};
+import TimePickerField from "../TimePickerField/TimePickerField";
+import TimePickerFieldWrapper from "./TimePicker/TimePicker";
+// export const renderLabel = (
+//   label: string,
+//   isRequired?: boolean,
+//   alignRight?: boolean
+// ) => {
+//   return (
+//     <LabelComponent
+//       container
+//       style={{ justifyContent: alignRight ? "flex-end" : "normal" }}
+//     >
+//       <Box fontSize={"12px"}>
+//         {label}
+//         {isRequired ? <ImportantMark> *</ImportantMark> : ""}
+//       </Box>
+//     </LabelComponent>
+//   );
+// };
 export function formatDateMonthAndYear(date: any) {
   // Check if date is a string
   if (typeof date !== "string") {
@@ -90,6 +92,7 @@ export interface FormSectionPropsItem {
     | "toggleSwitch"
     | "rich-text-editor"
     | "multiEmail"
+    | "timepicker"
     | "";
   options?: OptionsProps[];
   required?: boolean;
@@ -119,7 +122,11 @@ export interface FormSectionPropsItem {
   doNotAllowPaste?: boolean;
   removeButtons?: string;
   Fonts?: number[];
-  FontFamily?:any
+  FontFamily?: any;
+  value1?:string | number | boolean;
+  value2?:string | number | boolean;
+  label1?:string;
+  label2?:string;
 }
 
 export interface FormRenderProps {
@@ -130,10 +137,18 @@ export interface FormRenderProps {
   getValues: any;
   clearErrors: any;
   setValue: any;
+  variant?: "standard" | "outlined" | "";
 }
-const RenderForm = (props: FormRenderProps) => {
-  console.log(props, "propsprops", props.item.inputType);
+export const renderLabel = (variant, props) =>
+  variant === "standard" && (
+    <span className="formInputlabel" style={{ fontSize: "12px"}}>
+      {props.item.label}{" "}
+      {props.item.required && <span style={{ color: "red" }}>*</span>}
+    </span>
+  );
 
+const RenderForm = (props: FormRenderProps) => {
+  const variant = props.variant || "";
   switch (props.item?.inputType) {
     case "text":
     case "multiEmail":
@@ -146,21 +161,23 @@ const RenderForm = (props: FormRenderProps) => {
             key={props.item.name}
             render={({ field }) => (
               <>
+                {renderLabel(variant, props)}
                 <TextField
                   {...field}
                   fullWidth
                   // error={props.errors}
-                  label={`${props.item.label}${props.item.required ? " *" : ""}`}
+                  label={
+                    variant !== "standard" ?
+                    `${props.item.label}${props.item.required ? " *" : ""}`:''
+                  }
                   placeholder={props.item.placeholder || ""}
                   InputProps={{
                     style: {
-                      fontFamily: "Roboto-Reg",
                       border: "none",
                     },
                   }}
                   autoComplete="off"
                   sx={{
-                    fontFamily: "Roboto-Reg",
                     "& .css-1holvmy,.css-lqj8pz-MuiFormLabel-root-MuiInputLabel-root, .css-kichxs-MuiFormLabel-root-MuiInputLabel-root":
                       {
                         top: "-10px",
@@ -168,11 +185,8 @@ const RenderForm = (props: FormRenderProps) => {
                       },
                     "& .css-2rul56-MuiFormLabel-root-MuiInputLabel-root": {
                       top: "-10px",
-                      fontFamily: "Roboto-Reg",
                     },
-                    "& .css-12ciryo-MuiFormLabel-root-MuiInputLabel-root ": {
-                      fontFamily: "Roboto-Reg",
-                    },
+                    "& .css-12ciryo-MuiFormLabel-root-MuiInputLabel-root ": {},
                     "& .css-1gq5vhi-MuiInputBase-root-MuiOutlinedInput-root input ":
                       {
                         outline: "none",
@@ -221,7 +235,6 @@ const RenderForm = (props: FormRenderProps) => {
                 {props?.item?.helperText && (
                   <span
                     style={{
-                      fontFamily: "Roboto-Reg",
                       fontSize: "11px",
                       color: "#3651d3",
                     }}
@@ -246,6 +259,7 @@ const RenderForm = (props: FormRenderProps) => {
             key={props.item.name}
             render={({ field }) => (
               <>
+                {renderLabel(variant, props)}
                 <RichTextEditor props={props} />
                 <ErrorMessageComponent>
                   <ErrorMessage errors={props.errors} name={props.item.name} />
@@ -254,7 +268,7 @@ const RenderForm = (props: FormRenderProps) => {
             )}
           />
         </>
-    );
+      );
     case "register-number":
       return (
         <>
@@ -264,16 +278,16 @@ const RenderForm = (props: FormRenderProps) => {
             name={props.item.name}
             render={({ field }) => (
               <>
+                {renderLabel(variant, props)}
                 <TextField
                   {...field}
                   fullWidth
                   onBlur={(e: any) => {
                     props?.item?.onBlurFn && props?.item?.onBlurFn(e);
                   }}
-                  label={`${props.item.label}${props.item.required ? " *" : ""}`}
+                  label={  variant !== "standard" ?`${props.item.label}${props.item.required ? " *" : ""}`:''}
                   InputProps={{
                     style: {
-                      fontFamily: "Roboto-Reg",
                       border: "none",
                     },
                   }}
@@ -287,7 +301,6 @@ const RenderForm = (props: FormRenderProps) => {
                     props.item.onInputProps && props.item.onInputProps(e);
                   }}
                   sx={{
-                    fontFamily: "Roboto-Reg",
                     "& .css-1holvmy,.css-lqj8pz-MuiFormLabel-root-MuiInputLabel-root, .css-kichxs-MuiFormLabel-root-MuiInputLabel-root":
                       {
                         top: "-10px",
@@ -295,11 +308,8 @@ const RenderForm = (props: FormRenderProps) => {
                       },
                     "& .css-2rul56-MuiFormLabel-root-MuiInputLabel-root": {
                       top: "-10px",
-                      fontFamily: "Roboto-Reg",
                     },
-                    "& .css-12ciryo-MuiFormLabel-root-MuiInputLabel-root ": {
-                      fontFamily: "Roboto-Reg",
-                    },
+                    "& .css-12ciryo-MuiFormLabel-root-MuiInputLabel-root ": {},
                     "& .css-1gq5vhi-MuiInputBase-root-MuiOutlinedInput-root input ":
                       {
                         outline: "none",
@@ -319,7 +329,6 @@ const RenderForm = (props: FormRenderProps) => {
                 {props?.item?.helperText && (
                   <span
                     style={{
-                      fontFamily: "Roboto-Reg",
                       fontSize: "11px",
                       color: "#3651d3",
                     }}
@@ -338,19 +347,19 @@ const RenderForm = (props: FormRenderProps) => {
     case "password":
       return (
         <Box position={"relative"} key={props.item.name}>
-          <PasswordField props={props} />
+          <PasswordField props={props} variant={variant} />
         </Box>
       );
     case "select":
       return (
         <>
-          <SingleSelect props={props} />
+          <SingleSelect props={props} variant={variant} />
         </>
       );
     case "select-v2":
       return (
         <>
-          <SingleSelectNonAutoComplete props={props} />
+          <SingleSelectNonAutoComplete props={props} variant={variant} />
         </>
       );
     // case "select-search-api":
@@ -371,10 +380,11 @@ const RenderForm = (props: FormRenderProps) => {
             render={({ field }) => {
               return (
                 <>
+                  {renderLabel(variant, props)}
                   <TextField
                     {...field}
                     size="small"
-                    label={`${props.item.label}${props.item.required ? " *" : ""}`}
+                    label={  variant !== "standard" ?`${props.item.label}${props.item.required ? " *" : ""}`:''}
                     value={props.getValues(props.item.name) || ""}
                     defaultValue={props.getValues(props.item.name) || null}
                     onInput={(e: any) => {
@@ -441,10 +451,11 @@ const RenderForm = (props: FormRenderProps) => {
             disabled={props.item?.disable}
             render={({ field }) => (
               <>
+                {renderLabel(variant, props)}
                 <TextField
                   type="text"
                   size="small"
-                  label={`${props.item.label}${props.item.required ? " *" : ""}`}
+                  label={  variant !== "standard" ?`${props.item.label}${props.item.required ? " *" : ""}`:''}
                   {...field}
                   onChange={(e) =>
                     props?.clearErrors && props?.clearErrors(props.item.name)
@@ -701,7 +712,13 @@ const RenderForm = (props: FormRenderProps) => {
     case "datepicker":
       return (
         <>
-          <DatepickerWrapperV2 props={props} />
+          <DatepickerWrapperV2 props={props} variant={variant} />
+        </>
+      );
+    case "timepicker":
+      return (
+        <>
+          <TimePickerFieldWrapper props={props} />
         </>
       );
     case "yearpicker":
@@ -714,6 +731,7 @@ const RenderForm = (props: FormRenderProps) => {
             render={({ field }) => (
               <>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  {renderLabel(variant,props)}
                   <DatePicker
                     sx={{
                       "& .css-1holvmy, .css-kichxs-MuiFormLabel-root-MuiInputLabel-root":
@@ -721,7 +739,7 @@ const RenderForm = (props: FormRenderProps) => {
                           top: "-10px",
                         },
                     }}
-                    label={`${props.item.label}${props.item.required ? " *" : ""}`}
+                    label={  variant !== "standard" ? `${props.item.label}${props.item.required ? " *" : ""}`:''}
                     views={["year"]}
                     value={field.value ? dayjs(field.value) : null}
                     onChange={(date: any) => field.onChange(date)}
@@ -752,23 +770,23 @@ const RenderForm = (props: FormRenderProps) => {
     case "dateRangePicker":
       return (
         <>
-          <DateRangePickerComponent props={props} />
+          <DateRangePickerComponent props={props} variant={variant} />
         </>
       );
     case "monthpicker":
       return (
         <>
-          <Monthpickerrender props={props} />
+          <Monthpickerrender props={props} variant={variant} />
         </>
       );
     case "multiselect":
       return (
         <>
-          <MultiSelectV1 props={props} />
+          <MultiSelectV1 props={props} variant={variant} />
         </>
       );
     case "file":
-      return <FormRenderFileUpload props={props} />;
+      return <FormRenderFileUpload props={props} variant={variant} />;
 
     case "textarea":
       return (
@@ -779,17 +797,16 @@ const RenderForm = (props: FormRenderProps) => {
             key={props.item.name}
             render={({ field }) => (
               <>
+                {renderLabel(variant, props)}
                 <TextField
                   multiline
                   size="small"
                   InputProps={{
                     style: {
-                      fontFamily: "Roboto-Reg",
                       border: "none",
                     },
                   }}
                   sx={{
-                    fontFamily: "Roboto-Reg",
                     "& .css-1holvmy,.css-lqj8pz-MuiFormLabel-root-MuiInputLabel-root, .css-kichxs-MuiFormLabel-root-MuiInputLabel-root":
                       {
                         top: "-10px",
@@ -800,11 +817,8 @@ const RenderForm = (props: FormRenderProps) => {
                     },
                     "& .css-2rul56-MuiFormLabel-root-MuiInputLabel-root": {
                       top: "-10px",
-                      fontFamily: "Roboto-Reg",
                     },
-                    "& .css-12ciryo-MuiFormLabel-root-MuiInputLabel-root ": {
-                      fontFamily: "Roboto-Reg",
-                    },
+                    "& .css-12ciryo-MuiFormLabel-root-MuiInputLabel-root ": {},
                     "& .css-1gq5vhi-MuiInputBase-root-MuiOutlinedInput-root input ":
                       {
                         outline: "none",
@@ -831,7 +845,7 @@ const RenderForm = (props: FormRenderProps) => {
                   maxRows={props.item.maxRows || 100}
                   placeholder={props.item.placeholder || "Type Something..."}
                   {...field}
-                  label={`${props.item.label}${props.item.required ? " *" : ""}`}
+                  label={ variant !== "standard" ? `${props.item.label}${props.item.required ? " *" : ""}`:''}
                   value={field.value || ""}
                   disabled={props.item.disable}
                   inputProps={{

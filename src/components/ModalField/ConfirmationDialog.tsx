@@ -48,7 +48,7 @@ const ConfirmationDialog = ({openConfirmDialog,handleCancel,onClickSubmit,text,S
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          fontFamily: "Roboto",
+          // fontFamily: "Roboto",
           fontSize: "14px",
           cursor: "move",
           borderBottom: "1px solid rgb(229 231 235 / 1)",
@@ -65,7 +65,7 @@ const ConfirmationDialog = ({openConfirmDialog,handleCancel,onClickSubmit,text,S
           },
         }}
       >
-        <Typography fontFamily={"Roboto-Reg"}>
+        <Typography >
           {text}
         </Typography>
         <Grid container gap={3}></Grid>

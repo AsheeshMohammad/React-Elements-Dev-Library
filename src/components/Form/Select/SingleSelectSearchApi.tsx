@@ -16,11 +16,11 @@ import { FormRenderProps } from "../FormRender";
 const useStyles = makeStyles((theme) => ({
   option: {
     fontSize: "11px", // Adjust the font size as needed
-    fontFamily: "Roboto-Reg",
+    
   },
   option2: {
     fontSize: "14px",
-    fontFamily: "Roboto-Reg",
+    
   },
 }));
 
@@ -185,7 +185,7 @@ const SingleSelectSearchApi = ({ props }: { props: FormRenderProps }) => {
           {props?.item?.helperText && (
             <span
               style={{
-                fontFamily: "Roboto-Reg",
+                
                 fontSize: "11px",
                 color: "#3651d3",
               }}
