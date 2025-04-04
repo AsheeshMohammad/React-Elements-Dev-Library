@@ -21,10 +21,18 @@ import FormRenderFileUpload from "./FileUpload/FormRenderFileUpload";
 import SingleSelectNonAutoComplete from "./Select/SingleSelectNonAutoComplete";
 import FormActiveSwitch from "./FormActiveSwitch";
 import { Theme } from "@emotion/react";
-import { SxProps } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  SxProps,
+  Typography,
+} from "@mui/material";
 import RichTextEditor from "../RichTextEditor/RichTextEditor";
 import TimePickerField from "../TimePickerField/TimePickerField";
 import TimePickerFieldWrapper from "./TimePicker/TimePicker";
+import FormRenderMultiFileUpload from "./FileUpload/FormRenderMultiFileUpload";
 // export const renderLabel = (
 //   label: string,
 //   isRequired?: boolean,
@@ -85,6 +93,7 @@ export interface FormSectionPropsItem {
     | "monthpicker"
     | "multiselect"
     | "file"
+    | "multifile"
     | "textarea"
     | "phoneNumber"
     | "pincode"
@@ -93,6 +102,7 @@ export interface FormSectionPropsItem {
     | "rich-text-editor"
     | "multiEmail"
     | "timepicker"
+    | "checkbox-group"
     | "";
   options?: OptionsProps[];
   required?: boolean;
@@ -117,16 +127,17 @@ export interface FormSectionPropsItem {
   sx?: SxProps<Theme>;
   donotAllowSpace?: boolean;
   onInputProps?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  fileType?: "excel" | "pdf" | "all" | "";
+  fileType?: "excel" | "pdf" | "all" | "image"  | "";
   handleFileError?: (message: string) => void;
   doNotAllowPaste?: boolean;
   removeButtons?: string;
   Fonts?: number[];
   FontFamily?: any;
-  value1?:string | number | boolean;
-  value2?:string | number | boolean;
-  label1?:string;
-  label2?:string;
+  value1?: string | number | boolean;
+  value2?: string | number | boolean;
+  label1?: string;
+  label2?: string;
+  settings?: FormSectionPropsItem[];
 }
 
 export interface FormRenderProps {
@@ -141,7 +152,7 @@ export interface FormRenderProps {
 }
 export const renderLabel = (variant, props) =>
   variant === "standard" && (
-    <span className="formInputlabel" style={{ fontSize: "12px"}}>
+    <span className="formInputlabel" style={{ fontSize: "12px" }}>
       {props.item.label}{" "}
       {props.item.required && <span style={{ color: "red" }}>*</span>}
     </span>
@@ -167,8 +178,9 @@ const RenderForm = (props: FormRenderProps) => {
                   fullWidth
                   // error={props.errors}
                   label={
-                    variant !== "standard" ?
-                    `${props.item.label}${props.item.required ? " *" : ""}`:''
+                    variant !== "standard"
+                      ? `${props.item.label}${props.item.required ? " *" : ""}`
+                      : ""
                   }
                   placeholder={props.item.placeholder || ""}
                   InputProps={{
@@ -285,7 +297,11 @@ const RenderForm = (props: FormRenderProps) => {
                   onBlur={(e: any) => {
                     props?.item?.onBlurFn && props?.item?.onBlurFn(e);
                   }}
-                  label={  variant !== "standard" ?`${props.item.label}${props.item.required ? " *" : ""}`:''}
+                  label={
+                    variant !== "standard"
+                      ? `${props.item.label}${props.item.required ? " *" : ""}`
+                      : ""
+                  }
                   InputProps={{
                     style: {
                       border: "none",
@@ -384,7 +400,11 @@ const RenderForm = (props: FormRenderProps) => {
                   <TextField
                     {...field}
                     size="small"
-                    label={  variant !== "standard" ?`${props.item.label}${props.item.required ? " *" : ""}`:''}
+                    label={
+                      variant !== "standard"
+                        ? `${props.item.label}${props.item.required ? " *" : ""}`
+                        : ""
+                    }
                     value={props.getValues(props.item.name) || ""}
                     defaultValue={props.getValues(props.item.name) || null}
                     onInput={(e: any) => {
@@ -455,7 +475,11 @@ const RenderForm = (props: FormRenderProps) => {
                 <TextField
                   type="text"
                   size="small"
-                  label={  variant !== "standard" ?`${props.item.label}${props.item.required ? " *" : ""}`:''}
+                  label={
+                    variant !== "standard"
+                      ? `${props.item.label}${props.item.required ? " *" : ""}`
+                      : ""
+                  }
                   {...field}
                   onChange={(e) =>
                     props?.clearErrors && props?.clearErrors(props.item.name)
@@ -620,54 +644,59 @@ const RenderForm = (props: FormRenderProps) => {
     //       />
     //     </>
     //   );
-    // // case "checkbox-group":
-    //   return (
-    //     <>
-    //       {renderLabel(props.item.label, props.item?.mandatory)}
-    //       <FormControl component="fieldset">
-    //         <FormGroup row>
-    //           {props.item.settingsField.map((settings, i) => {
-    //             return (
-    //               <Controller
-    //                 key={i}
-    //                 name={settings.name}
-    //                 control={props.control}
-    //                 render={({ field }) => {
-    //                   return (
-    //                     <FormControlLabel
-    //                       control={
-    //                         <Checkbox {...field} checked={field.value} />
-    //                       }
-    //                       sx={{
-    //                         ".MuiCheckbox-root": {
-    //                           padding: "6px 6px 6px 8px",
-    //                         },
-    //                       }}
-    //                       // label={settings.label}
-    //                       label={
-    //                         <Typography variant="subtitle2" fontSize={"13px"}>
-    //                           {settings.label}
-    //                         </Typography>
-    //                       }
-    //                       labelPlacement="end"
-    //                     />
-    //                   );
-    //                 }}
-    //               />
-    //             );
-    //           })}
-    //         </FormGroup>
-    //       </FormControl>
+    case "checkbox-group":
+      return (
+        <>
+          {renderLabel(variant, props)}
+          <FormControl component="fieldset">
+            <FormGroup row>
+              {props.item?.settings &&
+                props.item.settings.map((settings, i) => {
+                  return (
+                    <Controller
+                      key={i}
+                      name={settings.name}
+                      control={props.control}
+                      render={({ field }) => {
+                        return (
+                          <FormControlLabel
+                            control={
+                              <Checkbox {...field} checked={field.value} />
+                            }
+                            sx={{
+                              ".MuiCheckbox-root": {
+                                padding: "6px 2px 6px 8px",
+                                ".css-imrjgg-MuiButtonBase-root-MuiCheckbox-root":
+                                  {
+                                    color: "rgb(0, 0, 0) !important",
+                                  },
+                              },
+                            }}
+                            // label={settings.label}
+                            label={
+                              <Typography
+                                variant="subtitle2"
+                                fontSize={"11px"}
+                                fontWeight={"normal !important"}
+                              >
+                                {settings.label}
+                              </Typography>
+                            }
+                            labelPlacement="end"
+                          />
+                        );
+                      }}
+                    />
+                  );
+                })}
+            </FormGroup>
+          </FormControl>
 
-    //       <ErrorMessageComponent>
-    //         <ErrorMessage
-    //           errors={props.errors}
-    //           name={"PostInvoicegenerationEmail"}
-    //         />
-    //       </ErrorMessageComponent>
-    //     </>
-    //   );
-
+          <ErrorMessageComponent>
+            <ErrorMessage errors={props.errors} name={props.item.name} />
+          </ErrorMessageComponent>
+        </>
+      );
     // case "radio":
     //   return (
     //     <>
@@ -731,7 +760,7 @@ const RenderForm = (props: FormRenderProps) => {
             render={({ field }) => (
               <>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  {renderLabel(variant,props)}
+                  {renderLabel(variant, props)}
                   <DatePicker
                     sx={{
                       "& .css-1holvmy, .css-kichxs-MuiFormLabel-root-MuiInputLabel-root":
@@ -739,7 +768,11 @@ const RenderForm = (props: FormRenderProps) => {
                           top: "-10px",
                         },
                     }}
-                    label={  variant !== "standard" ? `${props.item.label}${props.item.required ? " *" : ""}`:''}
+                    label={
+                      variant !== "standard"
+                        ? `${props.item.label}${props.item.required ? " *" : ""}`
+                        : ""
+                    }
                     views={["year"]}
                     value={field.value ? dayjs(field.value) : null}
                     onChange={(date: any) => field.onChange(date)}
@@ -787,6 +820,8 @@ const RenderForm = (props: FormRenderProps) => {
       );
     case "file":
       return <FormRenderFileUpload props={props} variant={variant} />;
+    case "multifile":
+      return <FormRenderMultiFileUpload props={props} variant={variant} />;
 
     case "textarea":
       return (
@@ -845,7 +880,11 @@ const RenderForm = (props: FormRenderProps) => {
                   maxRows={props.item.maxRows || 100}
                   placeholder={props.item.placeholder || "Type Something..."}
                   {...field}
-                  label={ variant !== "standard" ? `${props.item.label}${props.item.required ? " *" : ""}`:''}
+                  label={
+                    variant !== "standard"
+                      ? `${props.item.label}${props.item.required ? " *" : ""}`
+                      : ""
+                  }
                   value={field.value || ""}
                   disabled={props.item.disable}
                   inputProps={{

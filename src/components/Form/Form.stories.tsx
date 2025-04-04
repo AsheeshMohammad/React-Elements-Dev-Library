@@ -41,8 +41,11 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     {
       name: "Editor", 
       label: "Editor",
-      inputType: "toggleSwitch",
-      label1:'Yes'
+      inputType: "multifile",
+      label1:'Yes',
+      fileType:"excel",
+      required:true,
+      errorMessage:'please select atleast one record'
     },
     {
       name: "Editor", 
@@ -64,6 +67,19 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
       required:true,
       errorMessage:'Please enter'
     },
+    {
+      name: "TimePicker", 
+      label: "Editor",
+      inputType: "checkbox-group",
+      label1:'Yes',
+      required:true,
+      settings:[
+        {
+          name:'red',
+          label:'red'
+        }
+      ]
+    },
   ];
   const { initialValues, validationSchema } = useFormValidatingContext(
     // props.formArray
@@ -74,13 +90,12 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
     resolver: yupResolver(validationSchema),
   });
   const data = form.watch("Editor");
-  console.log(data, "password");
+  const data2 = form.watch("EditorFile");
+  console.log(data, "password",data2);
   const pass = form.watch("number");
   useEffect(() => {
     setPassword(pass);
   }, [form.getValues()]);
-  console.log(form.formState.errors, "kjshgshj");
-
   const submitForm: any = (values: any) => {
     console.log(values, "smsms");
     form.reset(initialValues);

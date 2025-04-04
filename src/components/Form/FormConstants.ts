@@ -124,6 +124,30 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         renderCustomError(field);
         break;
 
+      case "multifile":
+        initialValues[field.name] = null;
+
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.string()
+            .test("hasAtLeastOneFile", field.errorMessage, (value) => {
+              if (!value) return false;
+
+              // Split by comma, trim, and filter out empty values
+              const files = value
+                .split(",")
+                .map((f) => f.trim())
+                .filter((f) => f !== "");
+
+              return files.length > 0;
+            })
+            .required(field.errorMessage);
+
+          renderCustomError(field);
+        }
+
+        renderCustomError(field);
+        break;
+
       case "number":
         initialValues[field.name] = null;
         if (field.required && field.errorMessage) {
