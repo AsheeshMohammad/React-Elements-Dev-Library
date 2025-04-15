@@ -60,24 +60,30 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
       label1:'Yes'
     },
     {
-      name: "TimePicker", 
+      name: "TimePickers", 
       label: "Editor",
       inputType: "timepicker",
       label1:'Yes',
       required:true,
-      errorMessage:'Please enter'
+      errorMessage:'Please enter',
+      minTime:'01:00:00.0000000',
+      maxTime:'05:00:00.0000000'
     },
     {
       name: "TimePicker", 
       label: "Editor",
-      inputType: "checkbox-group",
+      inputType: "radio-group",
       label1:'Yes',
       required:true,
       settings:[
         {
           name:'red',
           label:'red'
-        }
+        },
+        {
+          name:'nn',
+          label:'yes'
+        },
       ]
     },
   ];
@@ -91,7 +97,9 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
   });
   const data = form.watch("Editor");
   const data2 = form.watch("EditorFile");
-  console.log(data, "password",data2);
+  const TimePickers = form.watch("TimePickers");
+  const TimePicker = form.watch("TimePicker");
+  console.log(data, "password",data2,TimePickers,TimePicker);
   const pass = form.watch("number");
   useEffect(() => {
     setPassword(pass);

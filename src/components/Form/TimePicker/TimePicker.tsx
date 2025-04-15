@@ -40,7 +40,7 @@ export default function TimePickerFieldWrapper({
 }) {
   const value = props.getValues(props.item.name);
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} >
       <Controller
         name="time"
         control={props.control}
@@ -49,18 +49,39 @@ export default function TimePickerFieldWrapper({
             {" "}
             {renderLabel(props.variant, props)}
             <TimePicker
+            // ampm={false}     
               {...field}
               value={value ? parseCustomTime(value) : null}
               onChange={(newTime) => {
-                props.setValue(
-                  props.item.name,
+                const parsedTime = parseCustomTime(
                   formatDayjsToCustomTime(newTime)
                 );
-                props.item.onChangeFn && props.item.onChangeFn(formatDayjsToCustomTime(newTime))
-              }}
+                const min = props.item.minTime
+                  ? parseCustomTime(props.item.minTime)
+                  : null;
+                const max = props.item.maxTime
+                  ? parseCustomTime(props.item.maxTime)
+                  : null;
+
+                let finalTime = parsedTime;
+                if (min && parsedTime?.isBefore(min)) {
+                  finalTime = min;
+                } else if (max && parsedTime?.isAfter(max)) {
+                  finalTime = max;
+                }
+                const formatted = formatDayjsToCustomTime(finalTime);
+                props.setValue(props.item.name, formatted);
+                props.item.onChangeFn && props.item.onChangeFn(formatted);
+              }}              
+              minTime={
+                props.item.minTime ? parseCustomTime(props.item.minTime) : null
+              }
+              maxTime={
+                props.item.maxTime ? parseCustomTime(props.item.maxTime) : null
+              }
               label={props.variant === "standard" ? "" : props.item.label}
               disabled={props.item.disable}
-              slotProps={{ textField: { readOnly: true, size: "small" } }} // Prevent manual typing
+              slotProps={{ textField: { readOnly: true, size: "small" } }}
             />
           </>
         )}

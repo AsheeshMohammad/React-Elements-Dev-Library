@@ -37,6 +37,7 @@ const SingleSelect = ({ props,variant }: any) => {
         <>
           {renderLabel(variant, props)}
           <Autocomplete
+            key={props.item.options}
             {...field}
             value={
               props.getValues(props.item.name)

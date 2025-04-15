@@ -1,6 +1,6 @@
 {
   "name": "tp-react-elements-dev",
-  "version": "1.10.0",
+  "version": "1.10.6",
   "main": "dist/index.js",
   "private": false,
   "types": "dist/index.d.ts",
@@ -31,7 +31,7 @@
     "mui-daterange-picker": "^1.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.51.5",
+    "react-hook-form": "^7.55.0",
     "react-idle-timer": "^5.7.2",
     "react-scripts": "5.0.1",
     "sass": "^1.77.6",

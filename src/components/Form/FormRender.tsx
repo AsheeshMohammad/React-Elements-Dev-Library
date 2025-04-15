@@ -26,6 +26,7 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
+  RadioGroup,
   SxProps,
   Typography,
 } from "@mui/material";
@@ -33,6 +34,7 @@ import RichTextEditor from "../RichTextEditor/RichTextEditor";
 import TimePickerField from "../TimePickerField/TimePickerField";
 import TimePickerFieldWrapper from "./TimePicker/TimePicker";
 import FormRenderMultiFileUpload from "./FileUpload/FormRenderMultiFileUpload";
+import Radio from "@mui/material/Radio";
 // export const renderLabel = (
 //   label: string,
 //   isRequired?: boolean,
@@ -103,6 +105,7 @@ export interface FormSectionPropsItem {
     | "multiEmail"
     | "timepicker"
     | "checkbox-group"
+    | "radio-group"
     | "";
   options?: OptionsProps[];
   required?: boolean;
@@ -127,7 +130,7 @@ export interface FormSectionPropsItem {
   sx?: SxProps<Theme>;
   donotAllowSpace?: boolean;
   onInputProps?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  fileType?: "excel" | "pdf" | "all" | "image"  | "";
+  fileType?: "excel" | "pdf" | "all" | "image" | "";
   handleFileError?: (message: string) => void;
   doNotAllowPaste?: boolean;
   removeButtons?: string;
@@ -137,6 +140,8 @@ export interface FormSectionPropsItem {
   value2?: string | number | boolean;
   label1?: string;
   label2?: string;
+  minTime?: string;
+  maxTime?: string;
   settings?: FormSectionPropsItem[];
 }
 
@@ -644,52 +649,66 @@ const RenderForm = (props: FormRenderProps) => {
     //       />
     //     </>
     //   );
-    case "checkbox-group":
+    case "radio-group":
       return (
         <>
           {renderLabel(variant, props)}
           <FormControl component="fieldset">
-            <FormGroup row>
-              {props.item?.settings &&
-                props.item.settings.map((settings, i) => {
-                  return (
-                    <Controller
+            <Controller
+              name={props.item.name}
+              control={props.control}
+              render={({ field }) => (
+                <RadioGroup
+                  value={field.value} // explicitly bind the value
+                  onChange={(e) => {
+                    field.onChange(e.target.value); // ✅ update form state
+                    console.log(e.target.value, "radio value selected");
+                    props.item.onChangeFn &&
+                      props.item.onChangeFn(e.target.value); // optional handler
+                  }}
+                  row
+                  sx={{
+                    gap: "8px",
+                  }}
+                >
+                  {props.item?.settings?.map((option, i) => (
+                    <FormControlLabel
                       key={i}
-                      name={settings.name}
-                      control={props.control}
-                      render={({ field }) => {
-                        return (
-                          <FormControlLabel
-                            control={
-                              <Checkbox {...field} checked={field.value} />
-                            }
-                            sx={{
-                              ".MuiCheckbox-root": {
-                                padding: "6px 2px 6px 8px",
-                                ".css-imrjgg-MuiButtonBase-root-MuiCheckbox-root":
-                                  {
-                                    color: "rgb(0, 0, 0) !important",
-                                  },
-                              },
-                            }}
-                            // label={settings.label}
-                            label={
-                              <Typography
-                                variant="subtitle2"
-                                fontSize={"11px"}
-                                fontWeight={"normal !important"}
-                              >
-                                {settings.label}
-                              </Typography>
-                            }
-                            labelPlacement="end"
-                          />
-                        );
-                      }}
+                      value={option.name} // ✅ value should match field.value
+                      control={
+                        <Radio
+                          sx={{
+                            padding: "6px 2px 6px 8px",
+                            color: "black",
+                            "&.Mui-checked": {
+                              color: "#1976d2", // blue when selected
+                            },
+                            "& .MuiSvgIcon-root": {
+                              fontSize: 16, // 🔹 this actually controls the radio icon size
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography
+                          // variant="subtitle2"
+                          fontSize={"11px"}
+                          fontWeight={"normal !important"}
+                        >
+                          {option.label}
+                        </Typography>
+                      }
+                      // sx={{
+                      //   ".MuiRadio-root": {
+                      //     padding: "6px 2px 6px 8px",
+                      //     color: "rgb(0, 0, 0) !important",
+                      //   },
+                      // }}
                     />
-                  );
-                })}
-            </FormGroup>
+                  ))}
+                </RadioGroup>
+              )}
+            />
           </FormControl>
 
           <ErrorMessageComponent>

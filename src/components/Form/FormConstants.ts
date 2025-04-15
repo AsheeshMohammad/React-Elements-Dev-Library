@@ -264,6 +264,17 @@ const useFormValidatingContext = (formArray: FormSectionPropsItem[]) => {
         }
         renderCustomError(field);
         break;
+      case "checkbox-group":
+      case "radio-group":
+        initialValues[field.name] = "";
+        if (field.required && field.errorMessage) {
+          validationShape[field.name] = Yup.string()
+            .typeError(`Select ${field.label}`)
+            .required(field.errorMessage);
+          renderCustomError(field);
+        }
+        renderCustomError(field);
+        break;
       case "multiselect":
         initialValues[field.name] = null;
         if (field.required && field.errorMessage) {
