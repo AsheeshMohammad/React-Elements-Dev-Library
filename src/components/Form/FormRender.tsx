@@ -649,6 +649,60 @@ const RenderForm = (props: FormRenderProps) => {
     //       />
     //     </>
     //   );
+    case "checkbox-group":
+      return (
+        <>
+          {renderLabel(variant, props)}
+          <FormControl component="fieldset">
+            <FormGroup row>
+              {props.item?.settings &&
+                props.item.settings.map((settings, i) => {
+                  return (
+                    <Controller
+                      key={i}
+                      name={settings.name}
+                      control={props.control}
+                      render={({ field }) => {
+                        return (
+                          <FormControlLabel
+                            control={
+                              <Checkbox {...field} checked={field.value} />
+                            }
+                            sx={{
+                              ".MuiCheckbox-root": {
+                                padding: "6px 2px 6px 8px",
+                                ".css-imrjgg-MuiButtonBase-root-MuiCheckbox-root":
+                                  {
+                                    color: "rgb(0, 0, 0) !important",
+                                  },
+                              },
+                            }}
+                            // label={settings.label}
+                            label={
+                              <Typography
+                                variant="subtitle2"
+                                fontSize={"11px"}
+                                fontWeight={"normal !important"}
+                              >
+                                {settings.label}
+                              </Typography>
+                            }
+                            labelPlacement="end"
+                          />
+                        );
+                      }}
+                    />
+                  );
+                })}
+            </FormGroup>
+          </FormControl>
+
+          <ErrorMessageComponent>
+            <ErrorMessage errors={props.errors} name={props.item.name} />
+          </ErrorMessageComponent>
+        </>
+      );
+
     case "radio-group":
       return (
         <>
