@@ -7,3 +7,4 @@ export { Box as BoxTP } from "@mui/material";
 export { Grid as GridTP } from "@mui/material";
 export { ThemeProvider as ThemeProviderTP } from "@emotion/react";
 export * from '@mui/material/styles'
+export {default as MultiSelectFieldComponent} from '../components/SelectField/MultiSelectFieldComponent'

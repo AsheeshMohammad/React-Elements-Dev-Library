@@ -17,6 +17,7 @@ import FormRenderWrapper, { FormRenderWrapperProps } from "./FormRenderWrapper";
 import useFormValidatingContext from "./FormConstants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import MultiSelectFieldComponent from "../SelectField/MultiSelectFieldComponent";
 
 export default {
   title: "Components/Form",
@@ -111,6 +112,10 @@ const FormComponent: React.FC<FormRenderWrapperProps> = (props) => {
   return (
     <>
       <FormRenderWrapper formArray={formArray2} name={"myName"} form={form} variant="standard"/>
+      --------------------------------
+      <MultiSelectFieldComponent value={""} options={[]} onChangeFn={function (e: any): void {
+        throw new Error("Function not implemented.");
+      } } />
       <button onClick={() => form?.handleSubmit(submitForm)()}>Submit</button>
       <button onClick={() => form?.setValue("password", "Asheesh")}>
         Change

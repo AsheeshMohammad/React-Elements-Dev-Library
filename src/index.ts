@@ -18,3 +18,4 @@ export { default as DeleteFieldTP } from "./components/DeleteComponent/DeleteFie
 export { default as SessionTimeoutFieldTP } from "./components/SessionTimeOut/SessionTimeOut";
 export { useForm as useFormElementTP };
 export { yupResolver as yupResolverTP };
+export {default as MultiSelectFieldComponent} from './components/SelectField/MultiSelectFieldComponent'
