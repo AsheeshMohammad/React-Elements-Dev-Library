@@ -12,16 +12,7 @@ import { ClickAwayListener } from "@mui/base";
 
 const Monthpickerrender = ({ props,variant }:any) => {
   const ref = useRef<HTMLDivElement>(null);
-  // const [calenderOpen, setCalenderOpen] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  const handleToggle = () => {
-    if (!open) {
-      ref.current?.blur();
-    }
-    setOpen(!open);
-  };
-
+  const [calenderOpen, setCalenderOpen] = useState(false);
   return (
     <Controller
       control={props.control}
@@ -30,7 +21,7 @@ const Monthpickerrender = ({ props,variant }:any) => {
         <>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
           {renderLabel(variant,props)}
-            {/* <ClickAwayListener onClickAway={() => setCalenderOpen(false)}> */}
+            <ClickAwayListener onClickAway={() => setCalenderOpen(false)}>
               <DatePicker
                 ref={ref}
                 label={  variant !== "standard" && `${props.item.label}${props.item.required ? ' *' : ''}`}
@@ -43,16 +34,14 @@ const Monthpickerrender = ({ props,variant }:any) => {
                 }
                 slotProps={{
                   textField: {
-                    onClick: () => handleToggle(),
-                    inputRef: ref,
+                    onClick: () => setCalenderOpen(true),
+                    // onBlur: () => setCalenderOpen(false),
                   },
                 }}
                 disableOpenPicker={props.item.disable}
                 // onMonthChange={() => setCalenderOpen(false)}
                 // onYearChange={() => setCalenderOpen(false)}
-                open={open}
-                onOpen={handleToggle}
-                onClose={handleToggle}
+                open={calenderOpen}
                 defaultValue={field.value}
                 onChange={(date:any) => {
                   field.onChange(dayjs(date).format("MM/YYYY"));
@@ -94,7 +83,7 @@ const Monthpickerrender = ({ props,variant }:any) => {
                 minDate={props.item.minDate ? dayjs(props.item.minDate,'MM/YYYY') : null}
                 maxDate={props.item.maxDate ? dayjs(props.item.maxDate,'MM/YYYY') : null}
               />
-            {/* </ClickAwayListener> */}
+            </ClickAwayListener>
           </LocalizationProvider>
           {props?.item?.helperText && (
             <span
